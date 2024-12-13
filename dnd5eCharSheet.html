@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Sheet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section .title {
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 10px;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .column {
+            width: 48%;
+            box-sizing: border-box;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        table th {
+            background-color: #f2f2f2;
+        }
+        .death-saves {
+            margin-top: 20px;
+        }
+        .death-saves div {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .death-saves label {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Character Sheet</h1>
+
+        <!-- Basic Information -->
+        <div class="section">
+
+			<div class="portrait">
+                <img src="{{portrait_url}}" alt="Character Portrait">
+            
+			<hr>
+            <div class="title">Basic Information</div>
+			<hr>
+			</dim>
+            <div class="row">
+                <div class="column">Character Name: {{character_name}}</div>
+                <div class="column">Class & Level: {{class_level}}</div>
+            </div>
+            <div class="row">
+                <div class="column">Race: {{race}}</div>
+                <div class="column">Background: {{background}}</div>
+            </div>
+            <div class="row">
+                <div class="column">Experience Points: {{experience_points}}</div>
+                <div class="column">Alignment: {{alignment}}</div>
+            </div>
+			<div class="row">
+                <div class="column">PC Size: {{pcsize}}</div>
+				<div class="column">PC Height: {{pcheight}}</div>
+            </div>
+			<div class="row">
+				<div class="column">PC Weight: {{pcweight}}</div>
+            </div>
+        </div>
+        <hr>
+        <!-- Attributes -->
+        <div class="section">
+            <div class="title">Attributes</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Score</th>
+                        <th>Modifier</th>
+                        <th>Saving Throw</th>						
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Strength</td>
+                        <td>{{strength}}</td>
+                        <td>{{strength_mod}}</td>
+                        <td>{{strength_saving_throw}}</td>
+                    </tr>
+                    <tr>
+                        <td>Dexterity</td>
+                        <td>{{dexterity}}</td>
+                        <td>{{dexterity_mod}}</td>
+                        <td>{{dexterity_saving_throw}}</td>
+                    </tr>
+                    <tr>
+                        <td>Constitution</td>
+                        <td>{{constitution}}</td>
+                        <td>{{constitution_mod}}</td>
+                        <td>{{constitution_saving_throw}}</td>
+                    </tr>
+                    <tr>
+                        <td>Intelligence</td>
+                        <td>{{intelligence}}</td>
+                        <td>{{intelligence_mod}}</td>
+                        <td>{{intelligence_saving_throw}}</td>
+                    </tr>
+                    <tr>
+                        <td>Wisdom</td>
+                        <td>{{wisdom}}</td>
+                        <td>{{wisdom_mod}}</td>
+                        <td>{{wisdom_saving_throw}}</td>						
+                    </tr>
+                    <tr>
+                        <td>Charisma</td>
+                        <td>{{charisma}}</td>
+                        <td>{{charisma_mod}}</td>
+                        <td>{{charisma_saving_throw}}</td>					
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Combat Information -->
+        <div class="section">
+            <div class="title">Combat Information</div>
+            <div class="row">
+                <div class="column">Armor Class: {{armor_class}}</div>
+                <div class="column">Initiative: {{initiative}}</div>
+            </div>
+            <div class="row">
+                <div class="column">Speed: {{speed}}</div>
+                <div class="column">Hit Points: {{hit_points}}</div>
+            </div>
+            <div class="row">
+                <div class="column">Hit Dice: {{hit_dice}}</div>
+                <div class="column">Proficiency Bonus: {{proficiency_bonus}}</div>
+            </div>
+            <div class="row">
+                <div class="column">Passive Perception: {{passive_perception}}</div>
+            </div>
+<div class="death-saves">
+    <table>
+        <thead>
+            <tr>
+                <th>Death Saves</th>
+                <th colspan="3">Successes</th>
+                <th colspan="3">Failures</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+                <td><input type="checkbox"></td>
+                <td><input type="checkbox"></td>
+                <td><input type="checkbox"></td>
+                <td><input type="checkbox"></td>
+                <td><input type="checkbox"></td>
+                <td><input type="checkbox"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+        </div>
+
+        <!-- Skills -->
+        <div class="section">
+            <div class="title">Skills</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Skill</th>
+                        <th>Modifier</th>
+                        <th>Proficient</th>
+                        <th>Expert</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Acrobatics</td>
+                        <td>{{acrobatics}}</td>
+                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+                        <td>Animal Handling</td>
+                        <td>{{animal_handling}}</td>
+                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+                        <td>Arcana</td>
+                        <td>{{arcana}}</td>
+                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+                        <td>Athletics</td>
+                        <td>{{athletics}}</td>
+                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+                        <td>Deception</td>
+                        <td>{{deception}}</td>
+                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+                        <td>History</td>
+                        <td>{{history}}</td>
+                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+                        <td>Insight</td>
+                        <td>{{insight}}</td>
+                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+                        <td>Intimidation</td>
+                        <td>{{intimidation}}</td>
+                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+                        <td>Investigation</td>
+                        <td>{{investigation}}</td>
+                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+                        <td>Medicine</td>
+                        <td>{{medicine}}</td>
+                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+    <td>Nature</td>
+    <td>{{nature}}</td>
+    <td><input type="checkbox"></td>
+    <td><input type="checkbox"></td>
+</tr>
+<tr>
+    <td>Perception</td>
+    <td>{{perception}}</td>
+    <td><input type="checkbox"></td>
+    <td><input type="checkbox"></td>
+</tr>
+<tr>
+    <td>Performance</td>
+    <td>{{performance}}</td>
+    <td><input type="checkbox"></td>
+    <td><input type="checkbox"></td>
+</tr>
+<tr>
+    <td>Persuasion</td>
+    <td>{{persuasion}}</td>
+    <td><input type="checkbox"></td>
+    <td><input type="checkbox"></td>
+</tr>
+<tr>
+    <td>Religion</td>
+    <td>{{religion}}</td>
+    <td><input type="checkbox"></td>
+    <td><input type="checkbox"></td>
+</tr>
+<tr>
+    <td>Sleight of Hand</td>
+    <td>{{sleight_of_hand}}</td>
+    <td><input type="checkbox"></td>
+    <td><input type="checkbox"></td>
+</tr>
+<tr>
+    <td>Stealth</td>
+    <td>{{stealth}}</td>
+    <td><input type="checkbox"></td>
+    <td><input type="checkbox"></td>
+</tr>
+<tr>
+    <td>Survival</td>
+    <td>{{survival}}</td>
+    <td><input type="checkbox"></td>
+    <td><input type="checkbox"></td>
+</tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Inventory List -->
+        <div class="section">
+            <div class="title">Inventory List</div>
+			            <table>
+                <thead>
+                    <tr>
+                        <th>Qty</th>
+                        <th>Item</th>
+                        <th>Attuned</th>
+                        <th>Cost</th>
+                        <th>Carried</th>
+                        <th>Rarity</th>
+                        <th>Properties</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+				<tbody>
+        <!-- Each whole record needs to be wrapped in tr and each column in row wrapped in td -->
+					<div>{{inventorylist}}</div>
+				</tbody>
+			</table>
+            
+        </div>
+
+        <!-- Additional Information -->
+        <div class="section">
+            <div class="title">Additional Information</div>
+            <div>Personality Traits: {{personality_traits}}</div>
+            <div>Ideals: {{ideals}}</div>
+            <div>Bonds: {{bonds}}</div>
+            <div>Flaws: {{flaws}}</div>
+        </div>
+        <!-- Notes -->
+        <div class="section">
+            <div class="title">Notes</div>
+            <div>{{char_notes}}</div>
+        </div>
+    </div>
+</body>
+</html>
