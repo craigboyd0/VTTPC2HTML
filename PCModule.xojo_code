@@ -41,6 +41,10 @@ Protected Module PCModule
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
+		Protected ClassLvlDicts() As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
 		Protected CONBonus As Integer
 	#tag EndProperty
 

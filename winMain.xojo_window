@@ -397,9 +397,11 @@ End
 		    Try
 		      Var t As TextOutputStream = TextOutputStream.Create(OutputFile)
 		      
-		      'If ProfilePicFile.Exists Then
-		      'strHTML = strHTML.Replace("{{portrait_url}}", ProfilePicFile.NativePath)
-		      'End If
+		      If Self.ProfilePicFile <> Nil Then
+		        If Self.ProfilePicFile.Exists Then 
+		          strHTML = strHTML.Replace("{{portrait_url}}", ProfilePicFile.NativePath)
+		        End If
+		      End If
 		      
 		      strHTML = strHTML.Replace("{{character_name}}", PCModule.PCName)
 		      strHTML = strHTML.Replace("{{race}}", PCModule.Race)
@@ -466,19 +468,51 @@ End
 		      
 		      For x as Integer = 0 To PCModule.InventoryList.Count -1
 		        strInventory = strInventory + " <tr> " + EndOfLine
-		        strInventory = strInventory + " <td> " + PCModule.InventoryList(x).Lookup("count", "default").StringValue + " </td> " + EndOfLine
-		        strInventory = strInventory + " <td> " + PCModule.InventoryList(x).Lookup("name", "default").StringValue + " </td> " + EndofLine 
-		        strInventory = strInventory + " <td> " + PCModule.InventoryList(x).Lookup("attuned", "default").StringValue + " </td> " + EndOfLine
-		        strInventory = strInventory + " <td> " + PCModule.InventoryList(x).Lookup("cost", "default").StringValue + " </td> " + EndOfLine
-		        strInventory = strInventory + " <td> " + PCModule.InventoryList(x).Lookup("carried", "default").StringValue + " </td> " + EndOfLine
-		        strInventory = strInventory + " <td> " + PCModule.InventoryList(x).Lookup("rarity", "default").StringValue + " </td> " + EndOfLine
-		        strInventory = strInventory + " <td> " + PCModule.InventoryList(x).Lookup("description", "default").StringValue + " </td> " + EndOfLine
+		        strInventory = strInventory + " <td> " + PCModule.InventoryList(x).Lookup("count", "").StringValue + " </td> " + EndOfLine
+		        strInventory = strInventory + " <td> " + PCModule.InventoryList(x).Lookup("name", "").StringValue + " </td> " + EndofLine 
+		        strInventory = strInventory + " <td> " + PCModule.InventoryList(x).Lookup("attuned", "").StringValue + " </td> " + EndOfLine
+		        strInventory = strInventory + " <td> " + PCModule.InventoryList(x).Lookup("cost", "").StringValue + " </td> " + EndOfLine
+		        strInventory = strInventory + " <td> " + PCModule.InventoryList(x).Lookup("carried", "").StringValue + " </td> " + EndOfLine
+		        strInventory = strInventory + " <td> " + PCModule.InventoryList(x).Lookup("rarity", "").StringValue + " </td> " + EndOfLine
+		        strInventory = strInventory + " <td> " + PCModule.InventoryList(x).Lookup("properties", "").StringValue + " </td> " + EndOfLine
+		        strInventory = strInventory + " <td> " + PCModule.InventoryList(x).Lookup("description", "").StringValue + " </td> " + EndOfLine
 		        
 		        strInventory = strInventory + " </tr> " + EndOfLine
 		      Next x
 		      
 		      strHTML = strHTML.Replace("<div>{{inventorylist}}</div>", strInventory)
+		      //End of the Inventory work
 		      
+		      // Loop Thru class(es) and level(s)
+		      Var strClassLevel, strSpellAbility, strSpellCount As String
+		      strClassLevel = ""
+		      strSpellAbility = ""
+		      strSpellCount = ""
+		      For x as Integer = 0 to PCModule.ClassLvlDicts.Count -1
+		        
+		        strClassLevel = strClassLevel + PCModule.ClassLvlDicts(x).Lookup("name", "").StringValue + " ( " + _
+		        PCModule.ClassLvlDicts(x).Lookup("specialization", "").StringValue + " ) Lvl: " + PCModule.ClassLvlDicts(x).Lookup("level", "").StringValue
+		        
+		        strSpellAbility = strSpellAbility + PCModule.ClassLvlDicts(x).Lookup("spellability").StringValue
+		        
+		        strSpellCount = strSpellCount + PCModule.ClassLvlDicts(x).Lookup("spellcountknown").StringValue
+		        
+		        If x > 0 Then
+		          
+		          strClassLevel = strClassLevel + " / "
+		          strSpellAbility = strSpellAbility + " / "
+		          strSpellCount = strSpellCount + " / "
+		          
+		        End If
+		        
+		      Next x
+		      
+		      strHTML = strHTML.Replace("{{character_class_level}}", strClassLevel)
+		      strHTML = strHTML.Replace("{{spellability}}", strSpellAbility)
+		      strHTML = strHTML.Replace("{{spellsknown}}", strSpellCount)
+		      //End of the class level work
+		      
+		      //Close out the process
 		      t.Write(strHTML)
 		      t.Close
 		      
@@ -489,6 +523,55 @@ End
 		    End Try
 		    MsgBox("Output file has been written")
 		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub ProcessClassLevels(NodeList As XMLNodeList)
+		  Var node,child, grandchild as XMLNode
+		  Var xList As XMLNodeList
+		  Var sValue As String
+		  Var ClassDict As New Dictionary
+		  'Var strItemDesc As String
+		  
+		  For i as Integer = 0 To NodeList.Length - 1
+		    node = NodeList.Item(i)
+		    For x as Integer = 0 to node.ChildCount -1
+		      child = node.Child(x)
+		      
+		      sValue = child.Name ' here for debugging
+		      
+		      
+		      For y as Integer = 0 to child.ChildCount - 1
+		        grandchild = child.Child(y)
+		        sValue = grandchild.Name
+		        
+		        If sValue = "casterlevelinvmult" Then
+		          ClassDict.Value("casterlevelinvmult") = grandchild.FirstChild.Value.ToInteger
+		        ElseIf sValue = "casterpactmagic" Then
+		          ClassDict.Value("casterpactmagic") = grandchild.FirstChild.Value
+		        ElseIf sValue = "hddie" Then
+		          ClassDict.Value("hddie") = grandchild.FirstChild.Value
+		        ElseIf sValue = "level" Then
+		          ClassDict.Value("level") = grandchild.FirstChild.Value.ToInteger
+		        ElseIf sValue = "name" Then
+		          ClassDict.Value("name") = grandchild.FirstChild.Value
+		        ElseIf sValue = "specialization" Then
+		          ClassDict.Value("specialization") = grandchild.FirstChild.Value
+		        ElseIf sValue = "spellability" Then
+		          ClassDict.Value("spellability") = grandchild.FirstChild.Value
+		        Elseif sValue = "spellsknown" Then
+		          ClassDict.Value("spellcountknown") = grandchild.FirstChild.Value
+		        Elseif sValue = "spellsprepared" then
+		          ClassDict.Value("spellsprepared") = grandchild.FirstChild.Value
+		        End If
+		        
+		      Next y
+		      
+		      PCModule.ClassLvlDicts.add( ClassDict.Clone )
+		      ClassDict.RemoveAll()
+		    Next X
+		  Next i
 		End Sub
 	#tag EndMethod
 
@@ -538,6 +621,7 @@ End
 		        
 		      Next y
 		      PCModule.InventoryList.Add( InventoryDict.Clone )
+		      InventoryDict.RemoveAll()
 		    Next X
 		  Next i
 		End Sub
@@ -953,6 +1037,9 @@ End
 		  
 		  xmlList = xmlWalk.XQL("//character/inventorylist")
 		  ProcessInventory(xmlList)
+		  
+		  xmlList = xmlWalk.XQL("//character/classes")
+		  ProcessClassLevels(xmlList)
 		  
 		  OutputHTML()
 		  

@@ -81,7 +81,7 @@
 			</dim>
             <div class="row">
                 <div class="column">Character Name: {{character_name}}</div>
-                <div class="column">Class & Level: {{class_level}}</div>
+                <div class="column">Class and Level: {{character_class_level}}</div>
             </div>
             <div class="row">
                 <div class="column">Race: {{race}}</div>
@@ -333,7 +333,7 @@
                         <th>Cost</th>
                         <th>Carried</th>
                         <th>Rarity</th>
-                        <th>Properties</th>
+                        <!-- <th>Properties</th> -->
                         <th>Description</th>
                     </tr>
                 </thead>
@@ -345,8 +345,62 @@
             
         </div>
 
-        <!-- Additional Information -->
+        <!-- Spell List -->
+		<hr>
         <div class="section">
+            <div class="title">Spells</div>
+			
+			<div class="row">
+                <div class="column">Spell casting ability: {{spellability}}</div>
+                <div class="column">Number of Spells Known: {{spellsknown}}</div>
+            </div>
+			<br>
+			<div class="section">
+			<div class="title">Spell Slots</div>
+			<table>
+				<thead>
+					<tr>
+						<th>L01</th>
+						<th>L02</th>
+						<th>L03</th>
+						<th>L04</th>
+						<th>L05</th>
+						<th>L06</th>
+						<th>L07</th>
+						<th>L08</th>
+						<th>L09</th>						
+				</thead>
+				<tbody>
+        <!-- Each whole record needs to be wrapped in tr and each column in row wrapped in td -->
+					<div>{{spellslots}}</div>				
+				</tbody>
+			</table>
+			</div>
+			
+			<table>
+                <thead>
+                    <tr>
+                        <th>Level</th>
+                        <th>Name</th>
+                        <th>Attuned</th>
+                        <th>Cost</th>
+                        <th>Carried</th>
+                        <th>Rarity</th>
+                        <!-- <th>Properties</th> -->
+                        <th>Description</th>
+                    </tr>
+                </thead>
+				<tbody>
+        <!-- Each whole record needs to be wrapped in tr and each column in row wrapped in td -->
+					<div>{{spelllist}}</div>
+				</tbody>
+			</table>
+            
+        </div>
+
+        <!-- Additional Information -->
+        <hr>
+		<div class="section">
             <div class="title">Additional Information</div>
             <div>Personality Traits: {{personality_traits}}</div>
             <div>Ideals: {{ideals}}</div>
