@@ -553,6 +553,23 @@ End
 		      strHTML = strHTML.Replace("{{traitlist}}", strTraits)
 		      //end-traitlist
 		      
+		      //start-weaponlist
+		      Var strWeapons As String
+		      strWeapons = ""
+		      For x as Integer = 0 to PCModule.WeaponList.Count - 1
+		        strWeapons = strWeapons + " <tr> " + EndOfLine
+		        strWeapons = strWeapons + " <td> " + PCModule.WeaponList(x).Lookup("name", "").StringValue + " </td> " + EndOfLine
+		        strWeapons = strWeapons + " <td> " + PCModule.WeaponList(x).Lookup("maxammo", "").StringValue + " </td> " + EndofLine 
+		        strWeapons = strWeapons + " <td> " + PCModule.WeaponList(x).Lookup("prof", "").StringValue + " </td> " + EndOfLine
+		        strWeapons = strWeapons + " <td> " + PCModule.WeaponList(x).Lookup("properties", "").StringValue + " </td> " + EndOfLine
+		        //strWeapons = strWeapons + " <td> " + PCModule.WeaponList(x).Lookup("duration", "").StringValue + " </td> " + EndOfLine
+		        
+		        strWeapons = strWeapons + " </tr> " + EndOfLine
+		      Next x
+		      
+		      strHTML = strHTML.Replace("<div>{{weaponlist}}</div>", strWeapons)
+		      //end-weaponlist
+		      
 		      //Close out the process
 		      t.Write(strHTML)
 		      t.Close
@@ -851,6 +868,60 @@ End
 		      strTraitName = ""
 		      strTraitText = ""
 		      
+		    Next X
+		  Next i
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub ProcessWeaponList(NodeList As XMLNodeList)
+		  Var node,child, grandchild as XMLNode
+		  Var xList As XMLNodeList
+		  Var sValue As String
+		  Var WeaponDict As New Dictionary
+		  Var strWeaponDesc As String
+		  
+		  For i as Integer = 0 To NodeList.Length - 1
+		    node = NodeList.Item(i)
+		    For x as Integer = 0 to node.ChildCount -1
+		      child = node.Child(x)
+		      
+		      sValue = child.Name ' here for debugging
+		      
+		      
+		      For y as Integer = 0 to child.ChildCount - 1
+		        grandchild = child.Child(y)
+		        sValue = grandchild.Name
+		        
+		        If sValue = "attackbonus" Then
+		          WeaponDict.Value("attackbonus") = grandchild.FirstChild.Value.ToInteger
+		        ElseIf sValue = "carried" Then
+		          WeaponDict.Value("carried") = grandchild.FirstChild.Value.ToInteger
+		        ElseIf sValue = "handling" Then
+		          WeaponDict.Value("handling") = grandchild.FirstChild.Value.ToInteger
+		        ElseIf sValue = "isidentified" Then
+		          WeaponDict.Value("isidentified") = grandchild.FirstChild.Value.ToInteger
+		        ElseIf sValue = "name" Then
+		          WeaponDict.Value("name") = grandchild.FirstChild.Value
+		        ElseIf sValue = "maxammo" Then
+		          WeaponDict.Value("maxammo") = grandchild.FirstChild.Value
+		        ElseIf sValue = "prof" Then
+		          WeaponDict.Value("prof") = grandchild.FirstChild.Value
+		        ElseIf sValue = "properties" Then
+		          WeaponDict.Value("properties") = grandchild.FirstChild.Value
+		        ElseIf sValue = "damagelist" Then
+		          strWeaponDesc = ""
+		          For z as Integer = 0 to grandchild.ChildCount - 1
+		            'If grandchild.Child(z).Name = "p" Then
+		            'strItemDesc = strItemDesc + grandchild.Child(z).ToString + "<br>"
+		            'End If
+		          Next z
+		          
+		        End If
+		        
+		      Next y
+		      PCModule.WeaponList.add( WeaponDict.Clone )
+		      WeaponDict.RemoveAll
 		    Next X
 		  Next i
 		End Sub
@@ -1225,6 +1296,9 @@ End
 		  
 		  xmlList = xmlWalk.XQL("//character/traitlist")
 		  ProcessTraits(xmlList)
+		  
+		  xmlList = xmlWalk.XQL("//character/weaponlist")
+		  ProcessWeaponList(xmlList)
 		  
 		  OutputHTML()
 		  

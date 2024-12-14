@@ -265,6 +265,10 @@ Protected Module PCModule
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
+		Protected WeaponList() As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
 		Protected Weight As String
 	#tag EndProperty
 
