@@ -121,6 +121,10 @@ Protected Module PCModule
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
+		Protected Powers() As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
 		Protected ProfBonus As Integer
 	#tag EndProperty
 
@@ -205,6 +209,46 @@ Protected Module PCModule
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
+		Protected Spells() As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected SpellSlot01 As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected SpellSlot02 As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected SpellSlot03 As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected SpellSlot04 As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected SpellSlot05 As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected SpellSlot06 As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected SpellSlot07 As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected SpellSlot08 As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected SpellSlot09 As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
 		Protected STRBonus As Integer
 	#tag EndProperty
 
@@ -214,6 +258,10 @@ Protected Module PCModule
 
 	#tag Property, Flags = &h1
 		Protected STRSave As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected strTraits() As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

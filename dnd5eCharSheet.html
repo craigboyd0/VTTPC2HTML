@@ -333,7 +333,7 @@
                         <th>Cost</th>
                         <th>Carried</th>
                         <th>Rarity</th>
-                        <!-- <th>Properties</th> -->
+                        <th>Properties</th>
                         <th>Description</th>
                     </tr>
                 </thead>
@@ -371,8 +371,17 @@
 						<th>L09</th>						
 				</thead>
 				<tbody>
-        <!-- Each whole record needs to be wrapped in tr and each column in row wrapped in td -->
-					<div>{{spellslots}}</div>				
+					<tr>
+						<td>{{spell-slot-01}}</td>
+						<td>{{spell-slot-02}}</td>
+						<td>{{spell-slot-03}}</td>
+						<td>{{spell-slot-04}}</td>
+						<td>{{spell-slot-05}}</td>
+						<td>{{spell-slot-06}}</td>
+						<td>{{spell-slot-07}}</td>
+						<td>{{spell-slot-08}}</td>
+						<td>{{spell-slot-09}}</td>
+					</tr>					
 				</tbody>
 			</table>
 			</div>
@@ -382,12 +391,11 @@
                     <tr>
                         <th>Level</th>
                         <th>Name</th>
-                        <th>Attuned</th>
-                        <th>Cost</th>
-                        <th>Carried</th>
-                        <th>Rarity</th>
-                        <!-- <th>Properties</th> -->
-                        <th>Description</th>
+                        <th>Casting Time</th>
+                        <th>Components</th>
+                        <th>Duration</th>
+                        <th>Range</th>
+						<th>Description</th>
                     </tr>
                 </thead>
 				<tbody>
@@ -407,7 +415,13 @@
             <div>Bonds: {{bonds}}</div>
             <div>Flaws: {{flaws}}</div>
         </div>
+		<div class="section">
+		<hr>
+			<div class="title">Traits</div>
+			<div>{{traitlist}}</div>
+		</div>
         <!-- Notes -->
+		<hr>
         <div class="section">
             <div class="title">Notes</div>
             <div>{{char_notes}}</div>

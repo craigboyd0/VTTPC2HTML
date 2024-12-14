@@ -493,9 +493,9 @@ End
 		        strClassLevel = strClassLevel + PCModule.ClassLvlDicts(x).Lookup("name", "").StringValue + " ( " + _
 		        PCModule.ClassLvlDicts(x).Lookup("specialization", "").StringValue + " ) Lvl: " + PCModule.ClassLvlDicts(x).Lookup("level", "").StringValue
 		        
-		        strSpellAbility = strSpellAbility + PCModule.ClassLvlDicts(x).Lookup("spellability").StringValue
+		        strSpellAbility = strSpellAbility + PCModule.ClassLvlDicts(x).Lookup("spellability", "").StringValue
 		        
-		        strSpellCount = strSpellCount + PCModule.ClassLvlDicts(x).Lookup("spellcountknown").StringValue
+		        strSpellCount = strSpellCount + PCModule.ClassLvlDicts(x).Lookup("spellcountknown", "").StringValue
 		        
 		        If x > 0 Then
 		          
@@ -511,6 +511,47 @@ End
 		      strHTML = strHTML.Replace("{{spellability}}", strSpellAbility)
 		      strHTML = strHTML.Replace("{{spellsknown}}", strSpellCount)
 		      //End of the class level work
+		      
+		      //start-spell-slots
+		      strHTML = strHTML.Replace("{{spell-slot-01}}", str(PCModule.SpellSlot01))
+		      strHTML = strHTML.Replace("{{spell-slot-02}}", str(PCModule.SpellSlot02))
+		      strHTML = strHTML.Replace("{{spell-slot-03}}", str(PCModule.SpellSlot03))
+		      strHTML = strHTML.Replace("{{spell-slot-04}}", str(PCModule.SpellSlot04))
+		      strHTML = strHTML.Replace("{{spell-slot-05}}", str(PCModule.SpellSlot05))
+		      strHTML = strHTML.Replace("{{spell-slot-06}}", str(PCModule.SpellSlot06))
+		      strHTML = strHTML.Replace("{{spell-slot-07}}", str(PCModule.SpellSlot07))
+		      strHTML = strHTML.Replace("{{spell-slot-08}}", str(PCModule.SpellSlot08))
+		      strHTML = strHTML.Replace("{{spell-slot-09}}", str(PCModule.SpellSlot09))
+		      //end-spell-slots
+		      
+		      //start-spells
+		      Var strSpells As String
+		      strSpells = ""
+		      For x as Integer = 0 to PCModule.Spells.Count - 1
+		        strSpells = strSpells + " <tr> " + EndOfLine
+		        strSpells = strSpells + " <td> " + PCModule.Spells(x).Lookup("level", "").StringValue + " </td> " + EndOfLine
+		        strSpells = strSpells + " <td> " + PCModule.Spells(x).Lookup("name", "").StringValue + " </td> " + EndofLine 
+		        strSpells = strSpells + " <td> " + PCModule.Spells(x).Lookup("castingtime", "").StringValue + " </td> " + EndOfLine
+		        strSpells = strSpells + " <td> " + PCModule.Spells(x).Lookup("components", "").StringValue + " </td> " + EndOfLine
+		        strSpells = strSpells + " <td> " + PCModule.Spells(x).Lookup("duration", "").StringValue + " </td> " + EndOfLine
+		        strSpells = strSpells + " <td> " + PCModule.Spells(x).Lookup("range", "").StringValue + " </td> " + EndOfLine
+		        //strSpells = strSpells + " <td> " + PCModule.Spells(x).Lookup("source", "").StringValue + " </td> " + EndOfLine
+		        strSpells = strSpells + " <td> " + PCModule.Spells(x).Lookup("description", "").StringValue + " </td> " + EndOfLine
+		        
+		        strSpells = strSpells + " </tr> " + EndOfLine
+		      Next x
+		      //end-spells
+		      
+		      strHTML = strHTML.Replace("<div>{{spelllist}}</div>", strSpells)
+		      
+		      //start-traitlist
+		      Var strTraits As String
+		      strTraits = ""
+		      For x as Integer = 0 to PCModule.strTraits.Count - 1
+		        strTraits = strTraits + PCModule.strTraits(x) + EndOfLine
+		      Next x
+		      strHTML = strHTML.Replace("{{traitlist}}", strTraits)
+		      //end-traitlist
 		      
 		      //Close out the process
 		      t.Write(strHTML)
@@ -708,8 +749,110 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub ProcessSpells()
+		Protected Sub ProcessPowers()
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub ProcessSpells(NodeList As XMLNodeList)
+		  Var node,child, grandchild as XMLNode
+		  Var xList As XMLNodeList
+		  Var sValue As String
+		  Var SpellDict As New Dictionary
+		  Var strSpellDesc As String
+		  
+		  For i as Integer = 0 To NodeList.Length - 1
+		    node = NodeList.Item(i)
+		    For x as Integer = 0 to node.ChildCount -1
+		      child = node.Child(x)
+		      
+		      sValue = child.Name ' here for debugging
+		      
+		      
+		      For y as Integer = 0 to child.ChildCount - 1
+		        grandchild = child.Child(y)
+		        sValue = grandchild.Name
+		        
+		        If sValue = "level" Then
+		          SpellDict.Value("level") = grandchild.FirstChild.Value.ToInteger
+		        ElseIf sValue = "castingtime" Then
+		          SpellDict.Value("castingtime") = grandchild.FirstChild.Value
+		        ElseIf sValue = "components" Then
+		          SpellDict.Value("components") = grandchild.FirstChild.Value
+		        ElseIf sValue = "description" Then
+		          SpellDict.Value("description") = grandchild.ToString
+		          'SpellDict.Value("description") = grandchild.FirstChild.FirstChild.Value
+		        ElseIf sValue = "name" Then
+		          SpellDict.Value("name") = grandchild.FirstChild.Value
+		        ElseIf sValue = "duration" Then
+		          SpellDict.Value("duration") = grandchild.FirstChild.Value
+		        ElseIf sValue = "group" Then
+		          SpellDict.Value("group") = grandchild.FirstChild.Value
+		        ElseIf sValue = "prepared" Then
+		          SpellDict.Value("prepared") = grandchild.FirstChild.Value
+		        ElseIf sValue = "range" Then
+		          SpellDict.Value("range") = grandchild.FirstChild.Value
+		        ElseIf sValue = "school" Then
+		          SpellDict.Value("school") = grandchild.FirstChild.Value
+		        ElseIf sValue = "source" Then
+		          SpellDict.Value("source") = grandchild.FirstChild.Value
+		        ElseIf sValue = "actions" Then
+		          strSpellDesc = ""
+		          For z as Integer = 0 to grandchild.ChildCount - 1
+		            'If grandchild.Child(z).Name = "p" Then
+		            'strSpellDesc = strSpellDesc + grandchild.Child(z).ToString + "<br>"
+		            'End If
+		          Next z
+		          'SpellDict.Value("description") = strSpellDesc
+		        End If
+		        
+		      Next y
+		      PCModule.Spells.Add( SpellDict.Clone )
+		      SpellDict.RemoveAll()
+		    Next X
+		  Next i
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub ProcessTraits(NodeList As XMLNodeList)
+		  Var node,child, grandchild as XMLNode
+		  Var xList As XMLNodeList
+		  Var sValue As String
+		  Var strTraitName, strTraitText, strTraitFull As String
+		  
+		  For i as Integer = 0 To NodeList.Length - 1
+		    node = NodeList.Item(i)
+		    For x as Integer = 0 to node.ChildCount -1
+		      child = node.Child(x)
+		      
+		      sValue = child.Name ' here for debugging
+		      
+		      
+		      For y as Integer = 0 to child.ChildCount - 1
+		        grandchild = child.Child(y)
+		        sValue = grandchild.Name
+		        
+		        If sValue = "name" Then
+		          sValue = grandchild.FirstChild.Value
+		          strTraitName = sValue
+		        ElseIf sValue = "text" Then
+		          //sValue = grandchild.FirstChild.ToString
+		          sValue = grandchild.FirstChild.FirstChild.Value
+		          strTraitText = sValue
+		        End If
+		        
+		        
+		      Next y
+		      strTraitFull = "<b>Name:</b> " + strTraitName + "<br>" + "<b>Description:</b> " + strTraitText + "<br> <br>"
+		      PCModule.strTraits.Add(strTraitFull)
+		      strTraitFull = ""
+		      strTraitName = ""
+		      strTraitText = ""
+		      
+		    Next X
+		  Next i
 		End Sub
 	#tag EndMethod
 
@@ -978,6 +1121,42 @@ End
 		  xmlList = xmlWalk.XQL("//character/languagelist/id-00001/name")
 		  sValue = xmlList.Item(0).FirstChild.Value
 		  
+		  // spell slots
+		  xmlList = xmlWalk.XQL("//character/powermeta/spellslots1/max")
+		  sValue = xmlList.Item(0).FirstChild.Value
+		  PCModule.SpellSlot01 = val(sValue)
+		  
+		  xmlList = xmlWalk.XQL("//character/powermeta/spellslots2/max")
+		  sValue = xmlList.Item(0).FirstChild.Value
+		  PCModule.SpellSlot02 = val(sValue)
+		  
+		  xmlList = xmlWalk.XQL("//character/powermeta/spellslots3/max")
+		  sValue = xmlList.Item(0).FirstChild.Value
+		  PCModule.SpellSlot03 = val(sValue)
+		  
+		  xmlList = xmlWalk.XQL("//character/powermeta/spellslots4/max")
+		  sValue = xmlList.Item(0).FirstChild.Value
+		  PCModule.SpellSlot04 = val(sValue)
+		  
+		  xmlList = xmlWalk.XQL("//character/powermeta/spellslots5/max")
+		  sValue = xmlList.Item(0).FirstChild.Value
+		  PCModule.SpellSlot05 = val(sValue)
+		  
+		  xmlList = xmlWalk.XQL("//character/powermeta/spellslots6/max")
+		  sValue = xmlList.Item(0).FirstChild.Value
+		  PCModule.SpellSlot06 = val(sValue)
+		  
+		  xmlList = xmlWalk.XQL("//character/powermeta/spellslots7/max")
+		  sValue = xmlList.Item(0).FirstChild.Value
+		  PCModule.SpellSlot07 = val(sValue)
+		  
+		  xmlList = xmlWalk.XQL("//character/powermeta/spellslots8/max")
+		  sValue = xmlList.Item(0).FirstChild.Value
+		  PCModule.SpellSlot08 = val(sValue)
+		  
+		  xmlList = xmlWalk.XQL("//character/powermeta/spellslots9/max")
+		  sValue = xmlList.Item(0).FirstChild.Value
+		  PCModule.SpellSlot09 = val(sValue)
 		  
 		  #Pragma BreakOnExceptions Off
 		  Try
@@ -1040,6 +1219,12 @@ End
 		  
 		  xmlList = xmlWalk.XQL("//character/classes")
 		  ProcessClassLevels(xmlList)
+		  
+		  xmlList = xmlWalk.XQL("//character/powers")
+		  ProcessSpells(xmlList)
+		  
+		  xmlList = xmlWalk.XQL("//character/traitlist")
+		  ProcessTraits(xmlList)
 		  
 		  OutputHTML()
 		  
