@@ -392,6 +392,7 @@ End
 
 	#tag Method, Flags = &h1
 		Protected Sub OutputHTML()
+		  Var intProf As Integer
 		  
 		  If OutputFile <> Nil Then
 		    Try
@@ -440,24 +441,159 @@ End
 		      strHTML = strHTML.Replace("{{charisma}}", str(PCModule.CHRNbr))
 		      strHTML = strHTML.Replace("{{charisma_mod}}", str(PCModule.CHRBonus))
 		      strHTML = strHTML.Replace("{{charisma_saving_throw}}", str(PCModule.CHRSave))
+		      
+		      //Skills
+		      intProf = 0
 		      strHTML = strHTML.Replace("{{acrobatics}}", PCModule.SK_Acrobatics_Dict.Lookup("total", "default").StringValue)
+		      intProf = PCModule.SK_Acrobatics_Dict.Lookup("prof", 0).IntegerValue
+		      If intProf = 1 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='acrobatic_prof_cbox'>", "<input type='checkbox' id='acrobatic_prof_cbox' checked>")
+		      Elseif intProf = 2 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='acrobatic_exp_cbox'>", "<input type='checkbox' id='acrobatic_exp_cbox' checked>")
+		      End If
+		      
+		      intProf = 0
 		      strHTML = strHTML.Replace("{{arcana}}", PCModule.SK_Arcana_Dict.Lookup("total", "default").StringValue)
+		      intProf = PCModule.SK_Arcana_Dict.Lookup("prof", 0).IntegerValue
+		      If intProf = 1 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='arcana_prof_cbox'>", "<input type='checkbox' id='arcana_prof_cbox' checked>")
+		      ElseIf intProf = 2 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='arcana_exp_cbox'>", "<input type='checkbox' id='arcana_exp_cbox' checked>")
+		      End If
+		      
+		      intProf = 0
 		      strHTML = strHTML.Replace("{{animal_handling}}", PCModule.SK_AnimalHandling_Dict.Lookup("total", "default").StringValue)
+		      intProf = PCModule.SK_AnimalHandling_Dict.Lookup("prof", 0).IntegerValue
+		      If intProf = 1 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='animal_handling_prof_cbox'>", "<input type='checkbox' id='animal_handling_prof_cbox' checked>")
+		      ElseIf intProf = 2 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='animal_handling_exp_cbox'>", "<input type='checkbox' id='animal_handling_exp_cbox' checked>")
+		      End if
+		      
+		      intProf = 0
 		      strHTML = strHTML.Replace("{{athletics}}", PCModule.SK_Athletics_Dict.Lookup("total", "default").StringValue)
+		      intProf = PCModule.SK_Athletics_Dict.Lookup("prof", 0).IntegerValue
+		      If intProf = 1 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='athletics_prof_cbox'>", "<input type='checkbox' id='athletics_prof_cbox' checked>")
+		      Elseif intProf = 2 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='athletics_exp_cbox'>", "<input type='checkbox' id='athletics_exp_cbox' checked>")
+		      End If
+		      
+		      intProf = 0
 		      strHTML = strHTML.Replace("{{deception}}", PCModule.SK_Deception_Dict.Lookup("total", "default").StringValue)
+		      intProf = PCModule.SK_Deception_Dict.Lookup("prof", 0).IntegerValue
+		      If intProf = 1 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='deception_prof_cbox'>", "<input type='checkbox' id='deception_prof_cbox' checked>")
+		      Elseif intProf = 2 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='deception_exp_cbox'>", "<input type='checkbox' id='deception_exp_cbox' checked>")
+		      End If
+		      
+		      intProf = 0
 		      strHTML = strHTML.Replace("{{history}}", PCModule.SK_History_Dict.Lookup("total", "default").StringValue)
+		      intProf = PCModule.SK_History_Dict.Lookup("prof", 0).IntegerValue
+		      If intProf = 1 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='history_prof_cbox'>", "<input type='checkbox' id='history_prof_cbox' checked>")
+		      Elseif intProf = 2 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='history_exp_cbox'>", "<input type='checkbox' id='history_exp_cbox' checked>")
+		      End If
+		      
+		      intProf = 0
 		      strHTML = strHTML.Replace("{{insight}}", PCModule.SK_Insight_Dict.Lookup("total", "default").StringValue)
+		      intProf = PCModule.SK_Insight_Dict.Lookup("prof", 0).IntegerValue
+		      If intProf = 1 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='insight_prof_cbox'>", "<input type='checkbox' id='insight_prof_cbox' checked>")
+		      Elseif intProf = 2 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='insight_exp_cbox'>", "<input type='checkbox' id='insight_exp_cbox' checked>")
+		      End If
+		      
+		      intProf = 0
 		      strHTML = strHTML.Replace("{{intimidation}}", PCModule.SK_Intimidation_Dict.Lookup("total", "default").StringValue)
+		      intProf = PCModule.SK_Intimidation_Dict.Lookup("prof", 0).IntegerValue
+		      If intProf = 1 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='intimidation_prof_cbox'>", "<input type='checkbox' id='intimidation_prof_cbox' checked>")
+		      Elseif intProf = 2 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='intimidation_exp_cbox'>", "<input type='checkbox' id='intimidation_exp_cbox' checked>")
+		      End if
+		      
 		      strHTML = strHTML.Replace("{{investigation}}", PCModule.SK_Investigation_Dict.Lookup("total", "default").StringValue)
+		      intProf = PCModule.SK_Investigation_Dict.Lookup("prof", 0).IntegerValue
+		      If intProf = 1 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='investigation_prof_cbox'>", "<input type='checkbox' id='investigation_prof_cbox' checked>")
+		      ElseIf intProf = 2 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='investigation_exp_cbox'>", "<input type='checkbox' id='investigation_exp_cbox' checked>")
+		      End If
+		      
 		      strHTML = strHTML.Replace("{{medicine}}", PCModule.SK_Medicine_Dict.Lookup("total", "default").StringValue)
+		      intProf = PCModule.SK_Medicine_Dict.Lookup("prof", 0).IntegerValue
+		      If intProf = 1 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='medicine_prof_cbox'>", "<input type='checkbox' id='medicine_prof_cbox' checked>")
+		      ElseIf intProf = 2 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='medicine_exp_cbox'>", "<input type='checkbox' id='medicine_exp_cbox' checked>")
+		      End If
+		      
 		      strHTML = strHTML.Replace("{{nature}}", PCModule.SK_Nature_Dict.Lookup("total", "default").StringValue)
+		      intProf = PCModule.SK_Nature_Dict.Lookup("prof", 0).IntegerValue
+		      If intProf = 1 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='nature_prof_cbox'>", "<input type='checkbox' id='nature_prof_cbox' checked>")
+		      ElseIf intProf = 2 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='nature_exp_cbox'>", "<input type='checkbox' id='nature_exp_cbox' checked>")
+		      End If
+		      
 		      strHTML = strHTML.Replace("{{perception}}", PCModule.SK_Perception_Dict.Lookup("total", "default").StringValue)
+		      intProf = PCModule.SK_Perception_Dict.Lookup("prof", 0).IntegerValue
+		      If intProf = 1 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='perception_prof_cbox'>", "<input type='checkbox' id='perception_prof_cbox' checked>")
+		      ElseIf intProf = 2 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='perception_exp_cbox'>", "<input type='checkbox' id='perception_exp_cbox' checked>")
+		      End If
+		      
 		      strHTML = strHTML.Replace("{{performance}}", PCModule.SK_Performance_Dict.Lookup("total", "default").StringValue)
+		      intProf = PCModule.SK_Performance_Dict.Lookup("prof", 0).IntegerValue
+		      If intProf = 1 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='performance_prof_cbox'>", "<input type='checkbox' id='performance_prof_cbox' checked>")
+		      Elseif intProf = 2 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='performance_exp_cbox'>", "<input type='checkbox' id='performance_exp_cbox' checked>")
+		      End If
+		      
 		      strHTML = strHTML.Replace("{{persuasion}}", PCModule.SK_Persuasion_Dict.Lookup("total", "default").StringValue)
+		      intProf = PCModule.SK_Persuasion_Dict.Lookup("prof", 0).IntegerValue
+		      If intProf = 1 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='persuasion_prof_cbox'>", "<input type='checkbox' id='persuasion_prof_cbox' checked>")
+		      ElseIf intProf = 2 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='persuasion_exp_cbox'>", "<input type='checkbox' id='persuasion_exp_cbox' checked>")
+		      End If
+		      
 		      strHTML = strHTML.Replace("{{religion}}", PCModule.SK_Religion_Dict.Lookup("total", "default").StringValue)
+		      intProf = PCModule.SK_Religion_Dict.Lookup("prof", 0).IntegerValue
+		      If intProf = 1 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='religion_prof_cbox'>", "<input type='checkbox' id='religion_prof_cbox' checked>")
+		      ElseIf intProf = 2 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='religion_exp_cbox'>", "<input type='checkbox' id='religion_exp_cbox' checked>")
+		      End If
+		      
 		      strHTML = strHTML.Replace("{{sleight_of_hand}}", PCModule.SK_SlightOfHand_Dict.Lookup("total", "default").StringValue)
+		      intProf = PCModule.SK_SlightOfHand_Dict.Lookup("prof", 0).IntegerValue
+		      If intProf = 1 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='sleight_of_hand_prof_cbox'>", "<input type='checkbox' id='sleight_of_hand_prof_cbox' checked>")
+		      Elseif intProf = 2 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='sleight_of_hand_exp_cbox'>", "<input type='checkbox' id='sleight_of_hand_exp_cbox' checked>")
+		      End If
+		      
 		      strHTML = strHTML.Replace("{{stealth}}", PCModule.SK_Stealth_Dict.Lookup("total", "default").StringValue)
+		      intProf = PCModule.SK_Stealth_Dict.Lookup("prof", 0).IntegerValue
+		      If intProf = 1 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='stealth_prof_cbox'>", "<input type='checkbox' id='stealth_prof_cbox' checked>")
+		      Elseif intProf = 2 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='stealth_exp_cbox'>", "<input type='checkbox' id='stealth_exp_cbox' checked>")
+		      End if
+		      
 		      strHTML = strHTML.Replace("{{survival}}", PCModule.SK_Survival_Dict.Lookup("total", "default").StringValue)
+		      intProf = PCModule.SK_Survival_Dict.Lookup("prof", 0).IntegerValue
+		      If intProf = 1 then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='survival_prof_cbox'>", "<input type='checkbox' id='survival_prof_cbox' checked>")
+		      ElseIf intProf = 2 Then
+		        strHTML = strHTML.Replace("<input type='checkbox' id='survival_exp_cbox'>", "<input type='checkbox' id='survival_exp_cbox' checked>")
+		      End If
 		      
 		      strHTML = strHTML.Replace("{{char_notes}}", PCModule.Notes)
 		      
@@ -587,7 +723,6 @@ End
 	#tag Method, Flags = &h1
 		Protected Sub ProcessClassLevels(NodeList As XMLNodeList)
 		  Var node,child, grandchild as XMLNode
-		  Var xList As XMLNodeList
 		  Var sValue As String
 		  Var ClassDict As New Dictionary
 		  'Var strItemDesc As String
@@ -636,7 +771,6 @@ End
 	#tag Method, Flags = &h1
 		Protected Sub ProcessInventory(NodeList As XMLNodeList)
 		  Var node,child, grandchild as XMLNode
-		  Var xList As XMLNodeList
 		  Var sValue As String
 		  Var InventoryDict As New Dictionary
 		  Var strItemDesc As String
@@ -688,7 +822,6 @@ End
 	#tag Method, Flags = &h1
 		Protected Sub ProcessPCAbilities(NodeList As XMLNodeList)
 		  Var node,child, grandchild as XMLNode
-		  Var xList As XMLNodeList
 		  Var sValue As String
 		  Var SkillDict As New Dictionary
 		  
@@ -774,7 +907,6 @@ End
 	#tag Method, Flags = &h1
 		Protected Sub ProcessSpells(NodeList As XMLNodeList)
 		  Var node,child, grandchild as XMLNode
-		  Var xList As XMLNodeList
 		  Var sValue As String
 		  Var SpellDict As New Dictionary
 		  Var strSpellDesc As String
@@ -835,7 +967,6 @@ End
 	#tag Method, Flags = &h1
 		Protected Sub ProcessTraits(NodeList As XMLNodeList)
 		  Var node,child, grandchild as XMLNode
-		  Var xList As XMLNodeList
 		  Var sValue As String
 		  Var strTraitName, strTraitText, strTraitFull As String
 		  
@@ -876,7 +1007,6 @@ End
 	#tag Method, Flags = &h1
 		Protected Sub ProcessWeaponList(NodeList As XMLNodeList)
 		  Var node,child, grandchild as XMLNode
-		  Var xList As XMLNodeList
 		  Var sValue As String
 		  Var WeaponDict As New Dictionary
 		  Var strWeaponDesc As String
@@ -1028,9 +1158,7 @@ End
 	#tag Event
 		Sub Pressed()
 		  Var xmlList As XMLNodeList
-		  Var x, y As Integer
 		  Var sValue As String
-		  Var node As XMLNode
 		  
 		  xmlList = xmlWalk.XQL("//character/name")
 		  sValue = xmlList.Item(0).FirstChild.Value
