@@ -627,13 +627,13 @@ End
 		      For x as Integer = 0 to PCModule.ClassLvlDicts.Count -1
 		        
 		        strClassLevel = strClassLevel + PCModule.ClassLvlDicts(x).Lookup("name", "").StringValue + " ( " + _
-		        PCModule.ClassLvlDicts(x).Lookup("specialization", "").StringValue + " ) Lvl: " + PCModule.ClassLvlDicts(x).Lookup("level", "").StringValue
+		        PCModule.ClassLvlDicts(x).Lookup("specialization", "").StringValue + " ) Lvl: " + PCModule.ClassLvlDicts(x).Lookup(" level", "").StringValue
 		        
 		        strSpellAbility = strSpellAbility + PCModule.ClassLvlDicts(x).Lookup("spellability", "").StringValue
 		        
 		        strSpellCount = strSpellCount + PCModule.ClassLvlDicts(x).Lookup("spellcountknown", "").StringValue
 		        
-		        If x > 0 Then
+		        If x >= 1 Then
 		          
 		          strClassLevel = strClassLevel + " / "
 		          strSpellAbility = strSpellAbility + " / "
@@ -1006,7 +1006,7 @@ End
 
 	#tag Method, Flags = &h1
 		Protected Sub ProcessWeaponList(NodeList As XMLNodeList)
-		  Var node,child, grandchild as XMLNode
+		  Var node,child, grandchild, ggrandchild, gggrandchild as XMLNode
 		  Var sValue As String
 		  Var WeaponDict As New Dictionary
 		  Var strWeaponDesc As String
@@ -1041,10 +1041,22 @@ End
 		          WeaponDict.Value("properties") = grandchild.FirstChild.Value
 		        ElseIf sValue = "damagelist" Then
 		          strWeaponDesc = ""
-		          For z as Integer = 0 to grandchild.ChildCount - 1
-		            'If grandchild.Child(z).Name = "p" Then
-		            'strItemDesc = strItemDesc + grandchild.Child(z).ToString + "<br>"
-		            'End If
+		          
+		          For z as Integer = 0 to grandchild.ChildCount -1
+		            ggrandchild = grandchild.Child(z)
+		            for a as Integer = 0 to ggrandchild.ChildCount -1
+		              gggrandchild = ggrandchild.Child(a)
+		              If gggrandchild.Name = "bonus" then
+		                strWeaponDesc = strWeaponDesc + " bonus: " + str(gggrandchild.FirstChild.Value) + "<br>"
+		              ElseIf gggrandchild.Name = "dice" Then
+		                strWeaponDesc = strWeaponDesc + " dice: " + gggrandchild.FirstChild.Value + "<br>"
+		              ElseIf gggrandchild.Name = "stat" then 
+		                strWeaponDesc = strWeaponDesc + " stat: " + gggrandchild.FirstChild.Value + "<br>"
+		              Elseif gggrandchild.Name = "type" then
+		                strWeaponDesc = strWeaponDesc + " type: " + gggrandchild.FirstChild.Value + "<br>"
+		              End If
+		            Next a
+		            WeaponDict.Value("damagelist") = strWeaponDesc
 		          Next z
 		          
 		        End If
