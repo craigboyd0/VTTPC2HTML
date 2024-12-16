@@ -69,6 +69,14 @@ Protected Module PCModule
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
+		Protected FeatDict() As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected FeatureListDict() As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
 		Protected Flaws As String
 	#tag EndProperty
 

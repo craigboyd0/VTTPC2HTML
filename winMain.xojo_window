@@ -393,6 +393,7 @@ End
 	#tag Method, Flags = &h1
 		Protected Sub OutputHTML()
 		  Var intProf As Integer
+		  Var regex As New RegEx
 		  
 		  If OutputFile <> Nil Then
 		    Try
@@ -620,28 +621,26 @@ End
 		      //End of the Inventory work
 		      
 		      // Loop Thru class(es) and level(s)
-		      Var strClassLevel, strSpellAbility, strSpellCount As String
+		      Var strClassLevel, strClassLevel2, strSpellAbility, strSpellCount As String
+		      Var intSearchStart As Integer
+		      
 		      strClassLevel = ""
 		      strSpellAbility = ""
 		      strSpellCount = ""
 		      For x as Integer = 0 to PCModule.ClassLvlDicts.Count -1
 		        
 		        strClassLevel = strClassLevel + PCModule.ClassLvlDicts(x).Lookup("name", "").StringValue + " ( " + _
-		        PCModule.ClassLvlDicts(x).Lookup("specialization", "").StringValue + " ) Lvl: " + PCModule.ClassLvlDicts(x).Lookup(" level", "").StringValue
+		        PCModule.ClassLvlDicts(x).Lookup("specialization", "").StringValue + " ) Lvl: " + PCModule.ClassLvlDicts(x).Lookup("level", "").StringValue + " / "
 		        
 		        strSpellAbility = strSpellAbility + PCModule.ClassLvlDicts(x).Lookup("spellability", "").StringValue
 		        
 		        strSpellCount = strSpellCount + PCModule.ClassLvlDicts(x).Lookup("spellcountknown", "").StringValue
 		        
-		        If x >= 1 Then
-		          
-		          strClassLevel = strClassLevel + " / "
-		          strSpellAbility = strSpellAbility + " / "
-		          strSpellCount = strSpellCount + " / "
-		          
-		        End If
-		        
 		      Next x
+		      
+		      strClassLevel = dropLastSegment(strClassLevel, "/")
+		      
+		      
 		      
 		      strHTML = strHTML.Replace("{{character_class_level}}", strClassLevel)
 		      strHTML = strHTML.Replace("{{spellability}}", strSpellAbility)
@@ -698,13 +697,31 @@ End
 		        strWeapons = strWeapons + " <td> " + PCModule.WeaponList(x).Lookup("maxammo", "").StringValue + " </td> " + EndofLine 
 		        strWeapons = strWeapons + " <td> " + PCModule.WeaponList(x).Lookup("prof", "").StringValue + " </td> " + EndOfLine
 		        strWeapons = strWeapons + " <td> " + PCModule.WeaponList(x).Lookup("properties", "").StringValue + " </td> " + EndOfLine
-		        //strWeapons = strWeapons + " <td> " + PCModule.WeaponList(x).Lookup("duration", "").StringValue + " </td> " + EndOfLine
+		        strWeapons = strWeapons + " <td> " + PCModule.WeaponList(x).Lookup("damagelist", "").StringValue + " </td> " + EndOfLine
 		        
 		        strWeapons = strWeapons + " </tr> " + EndOfLine
 		      Next x
 		      
 		      strHTML = strHTML.Replace("<div>{{weaponlist}}</div>", strWeapons)
 		      //end-weaponlist
+		      
+		      //start-featlist
+		      Var strFeatList As String
+		      
+		      For x as Integer = 0 to PCModule.FeatDict.Count - 1
+		        strFeatList = strFeatList + PCModule.FeatDict(x).Lookup("name", "").StringValue + ": " + PCModule.FeatDict(x).Lookup("description", "").StringValue + "<br>"
+		      Next x
+		      strHTML = strHTML.Replace("<div>{{feat_list}}</div>", strFeatList)
+		      //end-featlist
+		      
+		      //start-featurelist
+		      Var strFeature As String
+		      For x as Integer = 0 to PCModule.FeatureListDict.Count - 1
+		        strFeature = strFeature + PCModule.FeatureListDict(x).Lookup("name", "").StringValue + ": " + PCModule.FeatureListDict(x).Lookup("description", "").StringValue + "<br>"
+		      Next x
+		      
+		      strHTML = strHTML.Replace("<div>{{feature_list}}</div>", strFeature)
+		      //end-featurelist
 		      
 		      //Close out the process
 		      t.Write(strHTML)
@@ -763,6 +780,90 @@ End
 		      
 		      PCModule.ClassLvlDicts.add( ClassDict.Clone )
 		      ClassDict.RemoveAll()
+		    Next X
+		  Next i
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub ProcessFeats(NodeList As XMLNodeList)
+		  Var node,child, grandchild as XMLNode
+		  Var sValue As String
+		  Var FeatDict As New Dictionary
+		  Var strFeatDesc As String
+		  
+		  For i as Integer = 0 To NodeList.Length - 1
+		    
+		    node = NodeList.Item(i)
+		    
+		    For x as Integer = 0 to node.ChildCount -1
+		      child = node.Child(x)
+		      
+		      sValue = child.Name ' here for debugging
+		      
+		      For y as Integer = 0 to child.ChildCount - 1
+		        grandchild = child.Child(y)
+		        sValue = grandchild.Name
+		        
+		        If sValue = "name" Then
+		          FeatDict.Value("name") = "<b>" + grandchild.FirstChild.Value + "</b>"
+		        ElseIf sValue = "text" Then
+		          strFeatDesc = ""
+		          For z as Integer = 0 to grandchild.ChildCount - 1
+		            //If grandchild.Child(z).Name = "p" Then
+		            strFeatDesc = strFeatDesc + grandchild.Child(z).ToString + "<br>"
+		            //End If
+		          Next z
+		          FeatDict.Value("description") = strFeatDesc
+		        End If
+		        
+		      Next y
+		      
+		      PCModule.FeatDict.Add( FeatDict.Clone )
+		      FeatDict.RemoveAll
+		      
+		    Next X
+		  Next i
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub ProcessFeatureList(NodeList As XMLNodeList)
+		  Var node,child, grandchild as XMLNode
+		  Var sValue As String
+		  Var FeatureDict As New Dictionary
+		  Var strFeatureDesc As String
+		  
+		  For i as Integer = 0 To NodeList.Length - 1
+		    
+		    node = NodeList.Item(i)
+		    
+		    For x as Integer = 0 to node.ChildCount -1
+		      child = node.Child(x)
+		      
+		      sValue = child.Name ' here for debugging
+		      
+		      For y as Integer = 0 to child.ChildCount - 1
+		        grandchild = child.Child(y)
+		        sValue = grandchild.Name
+		        
+		        If sValue = "name" Then
+		          FeatureDict.Value("name") = "<b>" + grandchild.FirstChild.Value + "</b>"
+		        ElseIf sValue = "text" Then
+		          strFeatureDesc = ""
+		          For z as Integer = 0 to grandchild.ChildCount - 1
+		            //If grandchild.Child(z).Name = "p" Then
+		            strFeatureDesc = strFeatureDesc + grandchild.Child(z).ToString + "<br>"
+		            //End If
+		          Next z
+		          FeatureDict.Value("description") = strFeatureDesc
+		        End If
+		        
+		      Next y
+		      
+		      PCModule.FeatureListDict.Add( FeatureDict.Clone )
+		      FeatureDict.RemoveAll()
+		      
 		    Next X
 		  Next i
 		End Sub
@@ -1439,6 +1540,12 @@ End
 		  
 		  xmlList = xmlWalk.XQL("//character/weaponlist")
 		  ProcessWeaponList(xmlList)
+		  
+		  xmlList = xmlWalk.XQL("//character/featlist")
+		  ProcessFeats( xmlList )
+		  
+		  xmlList = xmlWalk.XQL("//character/featurelist")
+		  ProcessFeatureList( xmlList )
 		  
 		  OutputHTML()
 		  

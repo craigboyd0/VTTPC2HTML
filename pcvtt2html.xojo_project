@@ -7,6 +7,7 @@ DesktopWindow=winMain;winMain.xojo_window;&h000000005F105FFF;&h0000000000000000;
 MenuBar=MainMenuBar;MainMenuBar.xojo_menu;&h00000000551B1FFF;&h0000000000000000;false
 Module=PCModule;PCModule.xojo_code;&h000000003C9CA7FF;&h0000000000000000;false
 BuildSteps=Build Automation;Build Automation.xojo_code;&h00000000195BD7FF;&h0000000000000000;false
+Module=GenericFunctions;GenericFunctions.xojo_code;&h000000003BC5E7FF;&h0000000000000000;false
 DefaultWindow=winMain
 AppMenuBar=MainMenuBar
 MajorVersion=1
