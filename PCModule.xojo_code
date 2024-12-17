@@ -292,6 +292,10 @@ Protected Module PCModule
 		Protected WISSave As Integer = 0
 	#tag EndProperty
 
+	#tag Property, Flags = &h1
+		Protected XP As Integer = 0
+	#tag EndProperty
+
 
 	#tag ViewBehavior
 		#tag ViewProperty

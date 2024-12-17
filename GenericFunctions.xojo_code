@@ -2,9 +2,9 @@
 Protected Module GenericFunctions
 	#tag Method, Flags = &h0
 		Function dropLastSegment(strInput As String, strSeperator As String) As String
-		  Var segments() As String = strInput.ToArray( strSeperator )
-		  call segments.Pop
-		  Return string.FromArray( segments, strSeperator)
+		  Var segments ( ) As String = strInput.ToArray ( strSeperator )
+		  Call segments.Pop
+		  Return String.FromArray ( segments, strSeperator )
 		  
 		End Function
 	#tag EndMethod

@@ -3,6 +3,7 @@ Protected Class App
 Inherits DesktopApplication
 	#tag Event
 		Sub Opening()
+		  ' ConstantStorageLocation( App )
 		  jpegType = New FileType
 		  jpegType.Name = "image/jpeg"
 		  jpegType.Extensions = "jpg;jpeg"
@@ -18,6 +19,8 @@ Inherits DesktopApplication
 		  xmlFileType = New FileType
 		  xmlFileType.Name = "text/xml"
 		  xmlFileType.Extensions = "xml"
+		  
+		  
 		End Sub
 	#tag EndEvent
 
@@ -58,6 +61,39 @@ Inherits DesktopApplication
 	#tag Constant, Name = kFileQuitShortcut, Type = String, Dynamic = False, Default = \"", Scope = Public
 		#Tag Instance, Platform = Mac OS, Language = Default, Definition  = \"Cmd+Q"
 		#Tag Instance, Platform = Linux, Language = Default, Definition  = \"Ctrl+Q"
+	#tag EndConstant
+
+	#tag Constant, Name = MessageComment, Type = Boolean, Dynamic = False, Default = \"True", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = MessageInCodeBlock, Type = Boolean, Dynamic = False, Default = \"True", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = PadComma, Type = Boolean, Dynamic = False, Default = \"True", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = PadCommentAfter, Type = Boolean, Dynamic = False, Default = \"True", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = PadCommentBefore, Type = Boolean, Dynamic = False, Default = \"True", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = PadEmptyParInside, Type = Boolean, Dynamic = False, Default = \"True", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = PadIIf, Type = Boolean, Dynamic = False, Default = \"True", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = PadLineContinuation, Type = Boolean, Dynamic = False, Default = \"True", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = PadOperators, Type = Boolean, Dynamic = False, Default = \"True", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = PadParInside, Type = Boolean, Dynamic = False, Default = \"True", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = PadParOutside, Type = Boolean, Dynamic = False, Default = \"True", Scope = Public
 	#tag EndConstant
 
 
