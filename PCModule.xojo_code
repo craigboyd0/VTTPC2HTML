@@ -56,6 +56,10 @@ Protected Module PCModule
 		Protected CONSave As Integer = 0
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		db As SQLiteDatabase
+	#tag EndProperty
+
 	#tag Property, Flags = &h1
 		Protected DEXBonus As Integer
 	#tag EndProperty
@@ -110,6 +114,14 @@ Protected Module PCModule
 
 	#tag Property, Flags = &h1
 		Protected InventoryList() As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected Language As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected Money As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

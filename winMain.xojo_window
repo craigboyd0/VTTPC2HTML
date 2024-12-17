@@ -386,6 +386,14 @@ End
 		    ReadTemplate ( TemplateFile )
 		    
 		  End If
+		  
+		  db = New SQLiteDatabase
+		  Try
+		    db.Connect ( ) 
+		  Catch e As DatabaseException
+		    MessageBox ( e.Message )
+		  End Try
+		  
 		End Sub
 	#tag EndEvent
 
@@ -423,6 +431,8 @@ End
 		      strHTML = strHTML.Replace ( "{{flaws}}", PCModule.Flaws )
 		      strHTML = strHTML.Replace ( "{{bonds}}", PCModule.Bonds )
 		      strHTML = strHTML.Replace ( "{{experience_points}}", str ( PCModule.XP ) )
+		      strHTML = strHTML.Replace ( "<div>{{language}}</div>", PCModule.Language )
+		      
 		      
 		      // Ability Scores and modifiers
 		      strHTML = strHTML.Replace ( "{{strength}}", str ( PCModule.STRNbr ) )
@@ -729,6 +739,12 @@ End
 		      strHTML = strHTML.Replace ( "<div>{{feature_list}}</div>", strFeature )
 		      // end-featurelist
 		      
+		      // start-coinage
+		      strHTML = strHTML.Replace ( "<div>{{coinage}}</div>", PCModule.Money ) 
+		      
+		      // end-coinage
+		      
+		      
 		      // Close out the process
 		      t.Write ( strHTML )
 		      t.Close
@@ -787,6 +803,42 @@ End
 		      PCModule.ClassLvlDicts.add ( ClassDict.Clone )
 		      ClassDict.RemoveAll ( )
 		    Next X
+		  Next i
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub ProcessCoins(NodeList As XMLNodeList)
+		  Var node, child, grandchild As XMLNode
+		  Var sValue As String
+		  Var strCoin, strAmount, strMoney As String
+		  
+		  For i As Integer = 0 To NodeList.Length - 1
+		    
+		    node = NodeList.Item ( i )
+		    strMoney = "<ul>" + EndOfLine
+		    For x As Integer = 0 To node.ChildCount - 1
+		      child = node.Child ( x )
+		      
+		      sValue = child.Name ' here for debugging
+		      
+		      For y As Integer = 0 To child.ChildCount - 1
+		        grandchild = child.Child ( y )
+		        sValue = grandchild.Name
+		        
+		        If sValue = "name" Then
+		          strCoin = "<li>" + grandchild.FirstChild.Value + ": "
+		        ElseIf sValue = "amount" Then
+		          strAmount = grandchild.FirstChild.Value + "</li>"
+		        End If
+		        
+		      Next y
+		      
+		      strMoney = strMoney + strCoin + strAmount + EndOfLine
+		      
+		    Next X
+		    strMoney = strMoney + "</ul>"
+		    PCModule.Money = strMoney
 		  Next i
 		End Sub
 	#tag EndMethod
@@ -922,6 +974,38 @@ End
 		      PCModule.InventoryList.Add ( InventoryDict.Clone )
 		      InventoryDict.RemoveAll ( )
 		    Next X
+		  Next i
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub ProcessLanguage(NodeList As XMLNodeList)
+		  Var node, child, grandchild As XMLNode
+		  Var sValue As String
+		  Var strLanguage, strLanguages As String
+		  
+		  For i As Integer = 0 To NodeList.Length - 1
+		    
+		    node = NodeList.Item ( i )
+		    strLanguages = "<ul>" + EndOfLine
+		    For x As Integer = 0 To node.ChildCount - 1
+		      child = node.Child ( x )
+		      
+		      sValue = child.Name ' here for debugging
+		      
+		      For y As Integer = 0 To child.ChildCount - 1
+		        grandchild = child.Child ( y )
+		        sValue = grandchild.Name
+		        
+		        If sValue = "name" Then
+		          strLanguage = strLanguage + " <li>" + grandchild.FirstChild.Value + "</li> "
+		        End If
+		        
+		      Next y
+		      
+		    Next X
+		    strLanguages = strLanguages + strLanguage + " </ul> "
+		    PCModule.Language = strLanguages
 		  Next i
 		End Sub
 	#tag EndMethod
@@ -1460,8 +1544,8 @@ End
 		  xmlList = xmlWalk.XQL ( "//character/classes/id-00001/hddie" )
 		  sValue = xmlList.Item ( 0 ).FirstChild.Value
 		  
-		  xmlList = xmlWalk.XQL ( "//character/languagelist/id-00001/name" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
+		  xmlList = xmlWalk.XQL ( "//character/languagelist" )
+		  ProcessLanguage ( xmlList ) 
 		  
 		  // spell slots
 		  xmlList = xmlWalk.XQL ( "//character/powermeta/spellslots1/max" )
@@ -1576,6 +1660,9 @@ End
 		  
 		  xmlList = xmlWalk.XQL ( "//character/featurelist" )
 		  ProcessFeatureList ( xmlList )
+		  
+		  xmlList = xmlWalk.XQL ( "//character/coins" ) 
+		  ProcessCoins ( xmllist )
 		  
 		  OutputHTML ( )
 		  

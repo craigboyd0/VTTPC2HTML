@@ -49,6 +49,9 @@ Inherits DesktopApplication
 	#tag EndProperty
 
 
+	#tag Constant, Name = DebugLevel, Type = Double, Dynamic = False, Default = \"2", Scope = Public
+	#tag EndConstant
+
 	#tag Constant, Name = kEditClear, Type = String, Dynamic = False, Default = \"&Delete", Scope = Public
 		#Tag Instance, Platform = Windows, Language = Default, Definition  = \"&Delete"
 		#Tag Instance, Platform = Linux, Language = Default, Definition  = \"&Delete"
