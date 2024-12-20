@@ -679,6 +679,20 @@ End
 		      strHTML = strHTML.Replace( "{{spell-slot-09}}", str( PCModule.SpellSlot09 ) )
 		      // end-spell-slots
 		      
+		      // start-pactmagic-slots
+		      strHTML = strHTML.Replace( "{{pmagic-spell-slot-01}}", str( PCModule.PactMagic01 ) )
+		      strHTML = strHTML.Replace( "{{pmagic-spell-slot-02}}", str( PCModule.PactMagic02 ) )
+		      strHTML = strHTML.Replace( "{{pmagic-spell-slot-03}}", str( PCModule.PactMagic03 ) )
+		      strHTML = strHTML.Replace( "{{pmagic-spell-slot-04}}", str( PCModule.PactMagic04 ) )
+		      strHTML = strHTML.Replace( "{{pmagic-spell-slot-05}}", str( PCModule.PactMagic05 ) )
+		      strHTML = strHTML.Replace( "{{pmagic-spell-slot-06}}", str( PCModule.PactMagic06 ) )
+		      strHTML = strHTML.Replace( "{{pmagic-spell-slot-07}}", str( PCModule.PactMagic07 ) )
+		      strHTML = strHTML.Replace( "{{pmagic-spell-slot-08}}", str( PCModule.PactMagic08 ) )
+		      strHTML = strHTML.Replace( "{{pmagic-spell-slot-09}}", str( PCModule.PactMagic09 ) )
+		      
+		      // end-pactmagic-slots
+		      
+		      
 		      // start-spells
 		      
 		      strSpells = ""
@@ -715,23 +729,6 @@ End
 		      Catch e As DatabaseException
 		        MessageBox( e.Message )
 		      End Try
-		      
-		      ' Var strSpells As String
-		      ' strSpells = ""
-		      ' For x As Integer = 0 To PCModule.Spells.Count - 1
-		      ' strSpells = strSpells + " <tr> " + EndOfLine
-		      ' strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "level", "" ).StringValue + " </td> " + EndOfLine
-		      ' strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "name", "" ).StringValue + " </td> " + EndofLine 
-		      ' strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "castingtime", "" ).StringValue + " </td> " + EndOfLine
-		      ' strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "components", "" ).StringValue + " </td> " + EndOfLine
-		      ' strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "duration", "" ).StringValue + " </td> " + EndOfLine
-		      ' strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "range", "" ).StringValue + " </td> " + EndOfLine
-		      ' // strSpells = strSpells + " <td> " + PCModule.Spells(x).Lookup("source", "").StringValue + " </td> " + EndOfLine
-		      ' strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "description", "" ).StringValue + " </td> " + EndOfLine
-		      ' 
-		      ' strSpells = strSpells + " </tr> " + EndOfLine
-		      ' Next x
-		      // end-spells
 		      
 		      strHTML = strHTML.Replace( "<div>{{spelllist}}</div>", strSpells )
 		      
@@ -784,6 +781,22 @@ End
 		      
 		      // end-coinage
 		      
+		      // start-proficiency-list
+		      strHTML = strHTML.Replace( "{{proficiency_list}}", PCModule.ProfList )
+		      // end-proficiency-list
+		      
+		      // start-encumbrance
+		      strHTML = strHTML.Replace( "{{encumbered}}", str( PCModule.Encumbered ) )
+		      strHTML = strHTML.Replace( "{{encumberedHeavy}}", str( PCModule.Enc_Heavy ) )
+		      strHTML = strHTML.Replace( "{{liftpushdrag}}", str( PCModule.Enc_LiftPushDrag ) )
+		      strHTML = strHTML.Replace( "{{load}}", str( PCModule.Enc_Load ) )
+		      strHTML = strHTML.Replace( "{{max}}", str( PCModule.Enc_Max ) )
+		      
+		      // end-encumbrance
+		      
+		      // start-deity
+		      strHTML = strHTML.Replace( "{{deity}}", PCModule.Deity )
+		      // end-deity
 		      
 		      // Close out the process
 		      t.Write( strHTML )
@@ -1130,8 +1143,34 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub ProcessPowers()
+		Protected Sub ProcessProfList(NodeList As XMLNodeList)
+		  Var node, child, grandchild As XMLNode
+		  Var sValue As String
+		  Var strList, strItem As String
 		  
+		  For i As Integer = 0 To NodeList.Length - 1
+		    
+		    node = NodeList.Item( i )
+		    strList = "<ul>" + EndOfLine
+		    For x As Integer = 0 To node.ChildCount - 1
+		      child = node.Child( x )
+		      
+		      sValue = child.Name ' here for debugging
+		      
+		      For y As Integer = 0 To child.ChildCount - 1
+		        grandchild = child.Child( y )
+		        sValue = grandchild.Name
+		        
+		        If sValue = "name" Then
+		          strItem = strItem + " <li>" + grandchild.FirstChild.Value + "</li> "
+		        End If
+		        
+		      Next y
+		      
+		    Next X
+		    strList = strList + strItem + " </ul> "
+		    PCModule.ProfList = strList
+		  Next i
 		End Sub
 	#tag EndMethod
 
@@ -1438,95 +1477,119 @@ End
 		  Var xmlList As XMLNodeList
 		  Var sValue As String
 		  
-		  xmlList = xmlWalk.XQL ( "//character/name" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
+		  xmlList = xmlWalk.XQL( "//character/name" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
 		  PCModule.PCName = sValue
 		  
-		  xmlList = xmlWalk.XQL ( "//character/abilities/charisma/score" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value  // this will return the charisma score
-		  PCModule.CHRNbr = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/abilities/charisma/score" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value  // this will return the charisma score
+		  PCModule.CHRNbr = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/abilities/charisma/bonus" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value  
-		  PCModule.CHRBonus = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/abilities/charisma/bonus" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value  
+		  PCModule.CHRBonus = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/abilities/charisma/save" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value  
-		  PCModule.CHRSave = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/abilities/charisma/save" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value  
+		  PCModule.CHRSave = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/abilities/constitution/score" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value  // this will return the charisma score
-		  PCModule.CONNbr = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/abilities/constitution/score" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value  // this will return the charisma score
+		  PCModule.CONNbr = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/abilities/constitution/bonus" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value  
-		  PCModule.CONBonus = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/abilities/constitution/bonus" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value  
+		  PCModule.CONBonus = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/abilities/constitution/save" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value  
-		  PCModule.CONSave = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/abilities/constitution/save" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value  
+		  PCModule.CONSave = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/abilities/dexterity/score" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value  // this will return the charisma score
-		  PCModule.DEXNbr = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/abilities/dexterity/score" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value  // this will return the charisma score
+		  PCModule.DEXNbr = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/abilities/dexterity/bonus" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value  
-		  PCModule.DEXBonus = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/abilities/dexterity/bonus" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value  
+		  PCModule.DEXBonus = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/abilities/dexterity/save" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value  
-		  PCModule.DEXSave = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/abilities/dexterity/save" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value  
+		  PCModule.DEXSave = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/abilities/intelligence/score" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value  // this will return the charisma score
-		  PCModule.INTNbr = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/abilities/intelligence/score" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value  // this will return the charisma score
+		  PCModule.INTNbr = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/abilities/intelligence/bonus" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value  
-		  PCModule.INTBonus = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/abilities/intelligence/bonus" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value  
+		  PCModule.INTBonus = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/abilities/intelligence/save" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value  
-		  PCModule.INTSave = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/abilities/intelligence/save" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value  
+		  PCModule.INTSave = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/abilities/strength/score" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value  // this will return the charisma score
-		  PCModule.STRNbr = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/abilities/strength/score" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value  // this will return the charisma score
+		  PCModule.STRNbr = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/abilities/strength/bonus" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value  
-		  PCModule.STRBonus = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/abilities/strength/bonus" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value  
+		  PCModule.STRBonus = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/abilities/strength/save" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value  
-		  PCModule.STRSave = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/abilities/strength/save" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value  
+		  PCModule.STRSave = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/abilities/wisdom/score" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value  // this will return the charisma score
-		  PCModule.WISNbr = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/abilities/wisdom/score" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value  // this will return the charisma score
+		  PCModule.WISNbr = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/abilities/wisdom/bonus" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value  
-		  PCModule.WISBonus = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/abilities/wisdom/bonus" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value  
+		  PCModule.WISBonus = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/abilities/wisdom/save" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value  
-		  PCModule.WISSave = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/abilities/wisdom/save" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value  
+		  PCModule.WISSave = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/defenses/ac/total" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
-		  PCModule.ACTotal = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/defenses/ac/total" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.ACTotal = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/defenses/ac/prof" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
-		  PCModule.ACProf = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/defenses/ac/prof" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.ACProf = val( sValue )
+		  
+		  xmlList = xmlWalk.XQL( "//character/encumbrance/encumbered" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.Encumbered = val( sValue )
+		  
+		  xmlList = xmlWalk.XQL( "//character/encumbrance/encumberedheavy" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.Enc_Heavy = val( sValue )
+		  
+		  xmlList = xmlWalk.XQL( "//character/encumbrance/liftpushdrag" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.Enc_LiftPushDrag = val( sValue )
+		  
+		  xmlList = xmlWalk.XQL( "//character/encumbrance/load" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.Enc_Load = val( sValue )
+		  
+		  xmlList = xmlWalk.XQL( "//character/encumbrance/max" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.Enc_Max = val( sValue )
+		  
+		  xmlList = xmlWalk.XQL( "//character/deity" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.Deity = sValue
 		  
 		  #Pragma BreakOnExceptions Off
 		  Try
-		    xmlList = xmlWalk.XQL ( "//character/alignment" )
+		    xmlList = xmlWalk.XQL( "//character/alignment" )
 		    If xmlList <> Nil Then
-		      sValue = xmlList.Item ( 0 ).FirstChild.Value
+		      sValue = xmlList.Item( 0 ).FirstChild.Value
 		      PCModule.Alignment = sValue
 		    End If
 		  Catch e As XMLException
@@ -1534,36 +1597,36 @@ End
 		  End Try
 		  #Pragma BreakOnExceptions Default ' Restore setting from Project menu
 		  
-		  xmlList = xmlWalk.XQL ( "//character/perception" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
-		  PCModule.PassPerc = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/perception" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.PassPerc = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/speed/total" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
-		  PCModule.Speed = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/speed/total" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.Speed = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/exp" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
-		  PCModule.XP = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/exp" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.XP = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/initiative/total" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
-		  PCModule.Init = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/initiative/total" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.Init = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/background" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
+		  xmlList = xmlWalk.XQL( "//character/background" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
 		  PCModule.Background = sValue
 		  
-		  xmlList = xmlWalk.XQL ( "//character/hp/total" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
-		  PCModule.HPTotal = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/hp/total" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.HPTotal = val( sValue )
 		  
 		  #Pragma BreakOnExceptions Off
 		  Try
-		    xmlList = xmlWalk.XQL ( "//character/age" )
+		    xmlList = xmlWalk.XQL( "//character/age" )
 		    If xmlList <> Nil Then
-		      sValue = xmlList.Item ( 0 ).FirstChild.Value
-		      PCModule.Age = val ( sValue )
+		      sValue = xmlList.Item( 0 ).FirstChild.Value
+		      PCModule.Age = val( sValue )
 		    End If
 		  Catch e As XMLException
 		    
@@ -1572,55 +1635,55 @@ End
 		  
 		  #Pragma BreakOnExceptions Off
 		  Try
-		    xmlList = xmlWalk.XQL ( "//character/notes" )
-		    sValue = xmlList.Item ( 0 ).FirstChild.Value
-		    PCModule.Notes = sValue.ReplaceAll ( "\n", "<br>" )
+		    xmlList = xmlWalk.XQL( "//character/notes" )
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.Notes = sValue.ReplaceAll( "\n", "<br>" )
 		  Catch e As XMLException
 		  End Try
 		  #Pragma BreakOnExceptions Default
 		  
 		  #Pragma BreakOnExceptions Off
 		  Try
-		    xmlList = xmlWalk.XQL ( "//character/ideals" )
-		    sValue = xmlList.Item ( 0 ).FirstChild.Value
-		    PCModule.Ideals = sValue.ReplaceAll ( "\n", "<br>" )
+		    xmlList = xmlWalk.XQL( "//character/ideals" )
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.Ideals = sValue.ReplaceAll( "\n", "<br>" )
 		  Catch e As XMLException
 		  End Try
 		  #Pragma BreakOnExceptions Default
 		  
 		  #Pragma BreakOnExceptions Off
 		  Try
-		    xmlList = xmlWalk.XQL ( "//character/flaws" )
-		    sValue = xmlList.Item ( 0 ).FirstChild.Value
-		    PCModule.Flaws = sValue.ReplaceAll ( "\n", "<br>" )
+		    xmlList = xmlWalk.XQL( "//character/flaws" )
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.Flaws = sValue.ReplaceAll( "\n", "<br>" )
 		  Catch e As XMLException
 		  End Try
 		  #Pragma BreakOnExceptions Default
 		  
 		  #Pragma BreakOnExceptions Off
 		  Try
-		    xmlList = xmlWalk.XQL ( "//character/bonds" )
-		    sValue = xmlList.Item ( 0 ).FirstChild.Value
-		    PCModule.Bonds = sValue.ReplaceAll ( "\n", "<br>" )
+		    xmlList = xmlWalk.XQL( "//character/bonds" )
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.Bonds = sValue.ReplaceAll( "\n", "<br>" )
 		  Catch e As XMLException
 		  End Try
 		  #Pragma BreakOnExceptions Default
 		  
 		  #Pragma BreakOnExceptions Off
 		  Try 
-		    xmlList = xmlWalk.XQL ( "//character/appearance" )
-		    sValue = xmlList.Item ( 0 ).FirstChild.Value
+		    xmlList = xmlWalk.XQL( "//character/appearance" )
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
 		    PCModule.Appearance = sValue
 		  Catch e As XMLException
 		    
 		  End Try
 		  #Pragma BreakOnExceptions Default ' Restore setting from Project menu
 		  
-		  xmlList = xmlWalk.XQL ( "//character/classes/id-00001/hddie" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
+		  xmlList = xmlWalk.XQL( "//character/classes/id-00001/hddie" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
 		  
-		  xmlList = xmlWalk.XQL ( "//character/languagelist" )
-		  ProcessLanguage ( xmlList ) 
+		  xmlList = xmlWalk.XQL( "//character/languagelist" )
+		  ProcessLanguage( xmlList ) 
 		  
 		  // spell slots
 		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots1/max" )
@@ -1628,22 +1691,22 @@ End
 		  PCModule.SpellSlot01 = val( sValue )
 		  
 		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots2/max" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
-		  PCModule.SpellSlot02 = val ( sValue )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.SpellSlot02 = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/powermeta/spellslots3/max" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
-		  PCModule.SpellSlot03 = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots3/max" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.SpellSlot03 = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/powermeta/spellslots4/max" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
-		  PCModule.SpellSlot04 = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots4/max" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.SpellSlot04 = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/powermeta/spellslots5/max" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
-		  PCModule.SpellSlot05 = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots5/max" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.SpellSlot05 = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/powermeta/spellslots6/max" )
+		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots6/max" )
 		  sValue = xmlList.Item( 0 ).FirstChild.Value
 		  PCModule.SpellSlot06 = val( sValue )
 		  
@@ -1696,46 +1759,24 @@ End
 		  sValue = xmlList.Item( 0 ).FirstChild.Value
 		  PCModule.PactMagic09 = val( sValue )
 		  
+		  xmlList = xmlWalk.XQL( "//character/profbonus" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.ProfBonus = val( sValue )
 		  
-		  #Pragma BreakOnExceptions Off
-		  Try
-		    xmlList = xmlWalk.XQL( "//character/languagelist/id-00002/name" )
-		    If xmlList <> Nil Then
-		      sValue = xmlList.Item ( 0 ).FirstChild.Value
-		    End If
-		  Catch err As XMLException
-		  End Try
-		  #Pragma BreakOnExceptions Default ' Restore setting from Project menu
-		  
-		  #Pragma BreakOnExceptions Off
-		  Try
-		    xmlList = xmlWalk.XQL ( "//character/languagelist/id-00003/name" )
-		    If xmlList <> Nil Then
-		      sValue = xmlList.Item ( 0 ).FirstChild.Value
-		    End If
-		  Catch err As XMLException
-		  End Try
-		  #Pragma BreakOnExceptions Default ' Restore setting from Project menu
-		  
-		  xmlList = xmlWalk.XQL ( "//character/perception" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
-		  
-		  xmlList = xmlWalk.XQL ( "//character/profbonus" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
-		  PCModule.ProfBonus = val ( sValue )
-		  
-		  xmlList = xmlWalk.XQL ( "//character/race" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
+		  xmlList = xmlWalk.XQL( "//character/race" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
 		  PCModule.Race = sValue
 		  
-		  xmlList = xmlWalk.XQL ( "//character/size" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
+		  xmlList = xmlWalk.XQL( "//character/size" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
 		  PCModule.PCSize = sValue
+		  
+		  
 		  
 		  #Pragma BreakOnExceptions Off
 		  Try
-		    xmlList = xmlWalk.XQL ( "//character/weight" )
-		    sValue = xmlList.Item ( 0 ).FirstChild.Value
+		    xmlList = xmlWalk.XQL( "//character/weight" )
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
 		    PCModule.Weight = sValue
 		  Catch err As XMLException
 		  End Try
@@ -1743,41 +1784,44 @@ End
 		  
 		  #Pragma BreakOnExceptions Off
 		  Try
-		    xmlList = xmlWalk.XQL ( "//character/height" )
-		    sValue = xmlList.Item ( 0 ).FirstChild.Value
+		    xmlList = xmlWalk.XQL( "//character/height" )
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
 		    PCModule.Height = sValue
 		  Catch err As XMLException
 		  End Try
 		  #Pragma BreakOnExceptions Default ' Restore setting from Project menu
 		  
-		  xmlList = xmlWalk.XQL ( "//character/skilllist" )
-		  ProcessPCAbilities ( xmlList )
+		  xmlList = xmlWalk.XQL( "//character/skilllist" )
+		  ProcessPCAbilities( xmlList )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/inventorylist" )
-		  ProcessInventory ( xmlList )
+		  xmlList = xmlWalk.XQL( "//character/inventorylist" )
+		  ProcessInventory( xmlList )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/classes" )
-		  ProcessClassLevels ( xmlList )
+		  xmlList = xmlWalk.XQL( "//character/classes" )
+		  ProcessClassLevels( xmlList )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/powers" )
-		  ProcessSpells ( xmlList )
+		  xmlList = xmlWalk.XQL( "//character/powers" )
+		  ProcessSpells( xmlList )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/traitlist" )
-		  ProcessTraits ( xmlList )
+		  xmlList = xmlWalk.XQL( "//character/traitlist" )
+		  ProcessTraits( xmlList )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/weaponlist" )
-		  ProcessWeaponList ( xmlList )
+		  xmlList = xmlWalk.XQL( "//character/weaponlist" )
+		  ProcessWeaponList( xmlList )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/featlist" )
-		  ProcessFeats ( xmlList )
+		  xmlList = xmlWalk.XQL( "//character/featlist" )
+		  ProcessFeats( xmlList )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/featurelist" )
-		  ProcessFeatureList ( xmlList )
+		  xmlList = xmlWalk.XQL( "//character/featurelist" )
+		  ProcessFeatureList( xmlList )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/coins" ) 
-		  ProcessCoins ( xmllist )
+		  xmlList = xmlWalk.XQL( "//character/coins" ) 
+		  ProcessCoins( xmllist )
 		  
-		  OutputHTML ( )
+		  xmlList = xmlWalk.XQL( "//character/proficiencylist" )
+		  ProcessProfList( xmlList )
+		  
+		  OutputHTML( )
 		  
 		End Sub
 	#tag EndEvent

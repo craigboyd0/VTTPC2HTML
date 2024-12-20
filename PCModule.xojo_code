@@ -61,6 +61,10 @@ Protected Module PCModule
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
+		Protected Deity As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
 		Protected DEXBonus As Integer
 	#tag EndProperty
 
@@ -70,6 +74,26 @@ Protected Module PCModule
 
 	#tag Property, Flags = &h1
 		Protected DEXSave As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected Encumbered As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected Enc_Heavy As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected Enc_LiftPushDrag As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected Enc_Load As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected Enc_Max As Integer = 0
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -182,6 +206,10 @@ Protected Module PCModule
 
 	#tag Property, Flags = &h1
 		Protected ProfBonus As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected ProfList As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
