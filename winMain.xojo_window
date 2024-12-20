@@ -390,10 +390,12 @@ End
 		  db = New SQLiteDatabase
 		  Try
 		    db.Connect ( ) 
+		    db.ExecuteSQL ( k_ddl )
 		  Catch e As DatabaseException
 		    MessageBox ( e.Message )
 		  End Try
 		  
+		  oSQL = New cSmartSQL
 		End Sub
 	#tag EndEvent
 
@@ -402,212 +404,214 @@ End
 		Protected Sub OutputHTML()
 		  Var intProf As Integer
 		  Var regex As New RegEx
+		  Var rs As RowSet
+		  Var strSpells As String
 		  
 		  If OutputFile <> Nil Then
 		    Try
-		      Var t As TextOutputStream = TextOutputStream.Create ( OutputFile )
+		      Var t As TextOutputStream = TextOutputStream.Create( OutputFile )
 		      
 		      If Self.ProfilePicFile <> Nil Then
 		        If Self.ProfilePicFile.Exists Then 
-		          strHTML = strHTML.Replace ( "{{portrait_url}}", ProfilePicFile.NativePath )
+		          strHTML = strHTML.Replace( "{{portrait_url}}", ProfilePicFile.NativePath )
 		        End If
 		      End If
 		      
-		      strHTML = strHTML.Replace ( "{{character_name}}", PCModule.PCName )
-		      strHTML = strHTML.Replace ( "{{race}}", PCModule.Race )
-		      strHTML = strHTML.Replace ( "{{alignment}}", PCModule.Alignment )
-		      strHTML = strHTML.Replace ( "{{background}}", PCModule.Background )
-		      strHTML = strHTML.Replace ( "{{pcsize}}", PCModule.PCSize )
-		      strHTML = strHTML.Replace ( "{{pcheight}}", PCModule.PCSize )
-		      strHTML = strHTML.Replace ( "{{pcweight}}", PCModule.PCSize )
-		      strHTML = strHTML.Replace ( "{{character_name}}", PCModule.PCName )
-		      strHTML = strHTML.Replace ( "{{proficiency_bonus}}", str ( PCModule.ProfBonus ) )
-		      strHTML = strHTML.Replace ( "{{passive_perception}}", str ( PCModule.PassPerc ) )
-		      strHTML = strHTML.Replace ( "{{armor_class}}", str ( PCModule.ACTotal ) )
-		      strHTML = strHTML.Replace ( "{{speed}}", str ( PCModule.Speed ) )
-		      strHTML = strHTML.Replace ( "{{hit_points}}", str ( PCModule.HPTotal ) )
-		      strHTML = strHTML.Replace ( "{{initiative}}", str ( PCModule.Init ) )
-		      strHTML = strHTML.Replace ( "{{ideals}}", PCModule.Ideals )
-		      strHTML = strHTML.Replace ( "{{flaws}}", PCModule.Flaws )
-		      strHTML = strHTML.Replace ( "{{bonds}}", PCModule.Bonds )
-		      strHTML = strHTML.Replace ( "{{experience_points}}", str ( PCModule.XP ) )
-		      strHTML = strHTML.Replace ( "<div>{{language}}</div>", PCModule.Language )
+		      strHTML = strHTML.Replace( "{{character_name}}", PCModule.PCName )
+		      strHTML = strHTML.Replace( "{{race}}", PCModule.Race )
+		      strHTML = strHTML.Replace( "{{alignment}}", PCModule.Alignment )
+		      strHTML = strHTML.Replace( "{{background}}", PCModule.Background )
+		      strHTML = strHTML.Replace( "{{pcsize}}", PCModule.PCSize )
+		      strHTML = strHTML.Replace( "{{pcheight}}", PCModule.PCSize )
+		      strHTML = strHTML.Replace( "{{pcweight}}", PCModule.PCSize )
+		      strHTML = strHTML.Replace( "{{character_name}}", PCModule.PCName )
+		      strHTML = strHTML.Replace( "{{proficiency_bonus}}", str( PCModule.ProfBonus ) )
+		      strHTML = strHTML.Replace( "{{passive_perception}}", str( PCModule.PassPerc ) )
+		      strHTML = strHTML.Replace( "{{armor_class}}", str( PCModule.ACTotal ) )
+		      strHTML = strHTML.Replace( "{{speed}}", str( PCModule.Speed ) )
+		      strHTML = strHTML.Replace( "{{hit_points}}", str( PCModule.HPTotal ) )
+		      strHTML = strHTML.Replace( "{{initiative}}", str( PCModule.Init ) )
+		      strHTML = strHTML.Replace( "{{ideals}}", PCModule.Ideals )
+		      strHTML = strHTML.Replace( "{{flaws}}", PCModule.Flaws )
+		      strHTML = strHTML.Replace( "{{bonds}}", PCModule.Bonds )
+		      strHTML = strHTML.Replace( "{{experience_points}}", str( PCModule.XP ) )
+		      strHTML = strHTML.Replace( "<div>{{language}}</div>", PCModule.Language )
 		      
 		      
 		      // Ability Scores and modifiers
-		      strHTML = strHTML.Replace ( "{{strength}}", str ( PCModule.STRNbr ) )
-		      strHTML = strHTML.Replace ( "{{strength_mod}}", str ( PCModule.STRBonus ) )
-		      strHTML = strHTML.Replace ( "{{strength_saving_throw}}", str ( PCModule.STRSave ) )
-		      strHTML = strHTML.Replace ( "{{dexterity}}", str ( PCModule.DEXNbr ) )
-		      strHTML = strHTML.Replace ( "{{dexterity_mod}}", str ( PCModule.DEXBonus ) )
-		      strHTML = strHTML.Replace ( "{{dexterity_saving_throw}}", str ( PCModule.DEXSave ) )
-		      strHTML = strHTML.Replace ( "{{constitution}}", str ( PCModule.CONNbr ) )
-		      strHTML = strHTML.Replace ( "{{constitution_mod}}", str ( PCModule.CONBonus ) )
-		      strHTML = strHTML.Replace ( "{{constitution_saving_throw}}", str ( PCModule.CONSave ) )
-		      strHTML = strHTML.Replace ( "{{intelligence}}", str ( PCModule.INTNbr ) )
-		      strHTML = strHTML.Replace ( "{{intelligence_mod}}", str ( PCModule.INTBonus ) )
-		      strHTML = strHTML.Replace ( "{{intelligence_saving_throw}}", str ( PCModule.INTSave ) )
-		      strHTML = strHTML.Replace ( "{{wisdom}}", str ( PCModule.WISNbr ) )
-		      strHTML = strHTML.Replace ( "{{wisdom_mod}}", str ( PCModule.WISBonus ) )
-		      strHTML = strHTML.Replace ( "{{wisdom_saving_throw}}", str ( PCModule.WISSave ) )
-		      strHTML = strHTML.Replace ( "{{charisma}}", str ( PCModule.CHRNbr ) )
-		      strHTML = strHTML.Replace ( "{{charisma_mod}}", str ( PCModule.CHRBonus ) )
-		      strHTML = strHTML.Replace ( "{{charisma_saving_throw}}", str ( PCModule.CHRSave ) )
+		      strHTML = strHTML.Replace( "{{strength}}", str( PCModule.STRNbr ) )
+		      strHTML = strHTML.Replace( "{{strength_mod}}", str( PCModule.STRBonus ) )
+		      strHTML = strHTML.Replace( "{{strength_saving_throw}}", str( PCModule.STRSave ) )
+		      strHTML = strHTML.Replace( "{{dexterity}}", str( PCModule.DEXNbr ) )
+		      strHTML = strHTML.Replace( "{{dexterity_mod}}", str( PCModule.DEXBonus ) )
+		      strHTML = strHTML.Replace( "{{dexterity_saving_throw}}", str( PCModule.DEXSave ) )
+		      strHTML = strHTML.Replace( "{{constitution}}", str( PCModule.CONNbr ) )
+		      strHTML = strHTML.Replace( "{{constitution_mod}}", str( PCModule.CONBonus ) )
+		      strHTML = strHTML.Replace( "{{constitution_saving_throw}}", str( PCModule.CONSave ) )
+		      strHTML = strHTML.Replace( "{{intelligence}}", str( PCModule.INTNbr ) )
+		      strHTML = strHTML.Replace( "{{intelligence_mod}}", str( PCModule.INTBonus ) )
+		      strHTML = strHTML.Replace( "{{intelligence_saving_throw}}", str( PCModule.INTSave ) )
+		      strHTML = strHTML.Replace( "{{wisdom}}", str( PCModule.WISNbr ) )
+		      strHTML = strHTML.Replace( "{{wisdom_mod}}", str( PCModule.WISBonus ) )
+		      strHTML = strHTML.Replace( "{{wisdom_saving_throw}}", str( PCModule.WISSave ) )
+		      strHTML = strHTML.Replace( "{{charisma}}", str( PCModule.CHRNbr ) )
+		      strHTML = strHTML.Replace( "{{charisma_mod}}", str( PCModule.CHRBonus ) )
+		      strHTML = strHTML.Replace( "{{charisma_saving_throw}}", str( PCModule.CHRSave ) )
 		      
 		      // Skills
 		      intProf = 0
-		      strHTML = strHTML.Replace ( "{{acrobatics}}", PCModule.SK_Acrobatics_Dict.Lookup ( "total", "default" ).StringValue )
-		      intProf = PCModule.SK_Acrobatics_Dict.Lookup ( "prof", 0 ).IntegerValue
+		      strHTML = strHTML.Replace( "{{acrobatics}}", PCModule.SK_Acrobatics_Dict.Lookup( "total", "default" ).StringValue )
+		      intProf = PCModule.SK_Acrobatics_Dict.Lookup( "prof", 0 ).IntegerValue
 		      If intProf = 1 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='acrobatic_prof_cbox'>", "<input type='checkbox' id='acrobatic_prof_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='acrobatic_prof_cbox'>", "<input type='checkbox' id='acrobatic_prof_cbox' checked>" )
 		      ElseIf intProf = 2 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='acrobatic_exp_cbox'>", "<input type='checkbox' id='acrobatic_exp_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='acrobatic_exp_cbox'>", "<input type='checkbox' id='acrobatic_exp_cbox' checked>" )
 		      End If
 		      
 		      intProf = 0
-		      strHTML = strHTML.Replace ( "{{arcana}}", PCModule.SK_Arcana_Dict.Lookup ( "total", "default" ).StringValue )
-		      intProf = PCModule.SK_Arcana_Dict.Lookup ( "prof", 0 ).IntegerValue
+		      strHTML = strHTML.Replace( "{{arcana}}", PCModule.SK_Arcana_Dict.Lookup( "total", "default" ).StringValue )
+		      intProf = PCModule.SK_Arcana_Dict.Lookup( "prof", 0 ).IntegerValue
 		      If intProf = 1 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='arcana_prof_cbox'>", "<input type='checkbox' id='arcana_prof_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='arcana_prof_cbox'>", "<input type='checkbox' id='arcana_prof_cbox' checked>" )
 		      ElseIf intProf = 2 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='arcana_exp_cbox'>", "<input type='checkbox' id='arcana_exp_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='arcana_exp_cbox'>", "<input type='checkbox' id='arcana_exp_cbox' checked>" )
 		      End If
 		      
 		      intProf = 0
-		      strHTML = strHTML.Replace ( "{{animal_handling}}", PCModule.SK_AnimalHandling_Dict.Lookup ( "total", "default" ).StringValue )
-		      intProf = PCModule.SK_AnimalHandling_Dict.Lookup ( "prof", 0 ).IntegerValue
+		      strHTML = strHTML.Replace( "{{animal_handling}}", PCModule.SK_AnimalHandling_Dict.Lookup( "total", "default" ).StringValue )
+		      intProf = PCModule.SK_AnimalHandling_Dict.Lookup( "prof", 0 ).IntegerValue
 		      If intProf = 1 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='animal_handling_prof_cbox'>", "<input type='checkbox' id='animal_handling_prof_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='animal_handling_prof_cbox'>", "<input type='checkbox' id='animal_handling_prof_cbox' checked>" )
 		      ElseIf intProf = 2 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='animal_handling_exp_cbox'>", "<input type='checkbox' id='animal_handling_exp_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='animal_handling_exp_cbox'>", "<input type='checkbox' id='animal_handling_exp_cbox' checked>" )
 		      End If
 		      
 		      intProf = 0
-		      strHTML = strHTML.Replace ( "{{athletics}}", PCModule.SK_Athletics_Dict.Lookup ( "total", "default" ).StringValue )
-		      intProf = PCModule.SK_Athletics_Dict.Lookup ( "prof", 0 ).IntegerValue
+		      strHTML = strHTML.Replace( "{{athletics}}", PCModule.SK_Athletics_Dict.Lookup( "total", "default" ).StringValue )
+		      intProf = PCModule.SK_Athletics_Dict.Lookup( "prof", 0 ).IntegerValue
 		      If intProf = 1 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='athletics_prof_cbox'>", "<input type='checkbox' id='athletics_prof_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='athletics_prof_cbox'>", "<input type='checkbox' id='athletics_prof_cbox' checked>" )
 		      ElseIf intProf = 2 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='athletics_exp_cbox'>", "<input type='checkbox' id='athletics_exp_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='athletics_exp_cbox'>", "<input type='checkbox' id='athletics_exp_cbox' checked>" )
 		      End If
 		      
 		      intProf = 0
-		      strHTML = strHTML.Replace ( "{{deception}}", PCModule.SK_Deception_Dict.Lookup ( "total", "default" ).StringValue )
-		      intProf = PCModule.SK_Deception_Dict.Lookup ( "prof", 0 ).IntegerValue
+		      strHTML = strHTML.Replace( "{{deception}}", PCModule.SK_Deception_Dict.Lookup( "total", "default" ).StringValue )
+		      intProf = PCModule.SK_Deception_Dict.Lookup( "prof", 0 ).IntegerValue
 		      If intProf = 1 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='deception_prof_cbox'>", "<input type='checkbox' id='deception_prof_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='deception_prof_cbox'>", "<input type='checkbox' id='deception_prof_cbox' checked>" )
 		      ElseIf intProf = 2 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='deception_exp_cbox'>", "<input type='checkbox' id='deception_exp_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='deception_exp_cbox'>", "<input type='checkbox' id='deception_exp_cbox' checked>" )
 		      End If
 		      
 		      intProf = 0
-		      strHTML = strHTML.Replace ( "{{history}}", PCModule.SK_History_Dict.Lookup ( "total", "default" ).StringValue )
-		      intProf = PCModule.SK_History_Dict.Lookup ( "prof", 0 ).IntegerValue
+		      strHTML = strHTML.Replace( "{{history}}", PCModule.SK_History_Dict.Lookup( "total", "default" ).StringValue )
+		      intProf = PCModule.SK_History_Dict.Lookup( "prof", 0 ).IntegerValue
 		      If intProf = 1 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='history_prof_cbox'>", "<input type='checkbox' id='history_prof_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='history_prof_cbox'>", "<input type='checkbox' id='history_prof_cbox' checked>" )
 		      ElseIf intProf = 2 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='history_exp_cbox'>", "<input type='checkbox' id='history_exp_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='history_exp_cbox'>", "<input type='checkbox' id='history_exp_cbox' checked>" )
 		      End If
 		      
 		      intProf = 0
-		      strHTML = strHTML.Replace ( "{{insight}}", PCModule.SK_Insight_Dict.Lookup ( "total", "default" ).StringValue )
-		      intProf = PCModule.SK_Insight_Dict.Lookup ( "prof", 0 ).IntegerValue
+		      strHTML = strHTML.Replace( "{{insight}}", PCModule.SK_Insight_Dict.Lookup( "total", "default" ).StringValue )
+		      intProf = PCModule.SK_Insight_Dict.Lookup( "prof", 0 ).IntegerValue
 		      If intProf = 1 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='insight_prof_cbox'>", "<input type='checkbox' id='insight_prof_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='insight_prof_cbox'>", "<input type='checkbox' id='insight_prof_cbox' checked>" )
 		      ElseIf intProf = 2 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='insight_exp_cbox'>", "<input type='checkbox' id='insight_exp_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='insight_exp_cbox'>", "<input type='checkbox' id='insight_exp_cbox' checked>" )
 		      End If
 		      
 		      intProf = 0
-		      strHTML = strHTML.Replace ( "{{intimidation}}", PCModule.SK_Intimidation_Dict.Lookup ( "total", "default" ).StringValue )
-		      intProf = PCModule.SK_Intimidation_Dict.Lookup ( "prof", 0 ).IntegerValue
+		      strHTML = strHTML.Replace( "{{intimidation}}", PCModule.SK_Intimidation_Dict.Lookup( "total", "default" ).StringValue )
+		      intProf = PCModule.SK_Intimidation_Dict.Lookup( "prof", 0 ).IntegerValue
 		      If intProf = 1 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='intimidation_prof_cbox'>", "<input type='checkbox' id='intimidation_prof_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='intimidation_prof_cbox'>", "<input type='checkbox' id='intimidation_prof_cbox' checked>" )
 		      ElseIf intProf = 2 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='intimidation_exp_cbox'>", "<input type='checkbox' id='intimidation_exp_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='intimidation_exp_cbox'>", "<input type='checkbox' id='intimidation_exp_cbox' checked>" )
 		      End If
 		      
-		      strHTML = strHTML.Replace ( "{{investigation}}", PCModule.SK_Investigation_Dict.Lookup ( "total", "default" ).StringValue )
-		      intProf = PCModule.SK_Investigation_Dict.Lookup ( "prof", 0 ).IntegerValue
+		      strHTML = strHTML.Replace( "{{investigation}}", PCModule.SK_Investigation_Dict.Lookup( "total", "default" ).StringValue )
+		      intProf = PCModule.SK_Investigation_Dict.Lookup( "prof", 0 ).IntegerValue
 		      If intProf = 1 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='investigation_prof_cbox'>", "<input type='checkbox' id='investigation_prof_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='investigation_prof_cbox'>", "<input type='checkbox' id='investigation_prof_cbox' checked>" )
 		      ElseIf intProf = 2 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='investigation_exp_cbox'>", "<input type='checkbox' id='investigation_exp_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='investigation_exp_cbox'>", "<input type='checkbox' id='investigation_exp_cbox' checked>" )
 		      End If
 		      
-		      strHTML = strHTML.Replace ( "{{medicine}}", PCModule.SK_Medicine_Dict.Lookup ( "total", "default" ).StringValue )
-		      intProf = PCModule.SK_Medicine_Dict.Lookup ( "prof", 0 ).IntegerValue
+		      strHTML = strHTML.Replace( "{{medicine}}", PCModule.SK_Medicine_Dict.Lookup( "total", "default" ).StringValue )
+		      intProf = PCModule.SK_Medicine_Dict.Lookup( "prof", 0 ).IntegerValue
 		      If intProf = 1 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='medicine_prof_cbox'>", "<input type='checkbox' id='medicine_prof_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='medicine_prof_cbox'>", "<input type='checkbox' id='medicine_prof_cbox' checked>" )
 		      ElseIf intProf = 2 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='medicine_exp_cbox'>", "<input type='checkbox' id='medicine_exp_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='medicine_exp_cbox'>", "<input type='checkbox' id='medicine_exp_cbox' checked>" )
 		      End If
 		      
-		      strHTML = strHTML.Replace ( "{{nature}}", PCModule.SK_Nature_Dict.Lookup ( "total", "default" ).StringValue )
-		      intProf = PCModule.SK_Nature_Dict.Lookup ( "prof", 0 ).IntegerValue
+		      strHTML = strHTML.Replace( "{{nature}}", PCModule.SK_Nature_Dict.Lookup( "total", "default" ).StringValue )
+		      intProf = PCModule.SK_Nature_Dict.Lookup( "prof", 0 ).IntegerValue
 		      If intProf = 1 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='nature_prof_cbox'>", "<input type='checkbox' id='nature_prof_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='nature_prof_cbox'>", "<input type='checkbox' id='nature_prof_cbox' checked>" )
 		      ElseIf intProf = 2 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='nature_exp_cbox'>", "<input type='checkbox' id='nature_exp_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='nature_exp_cbox'>", "<input type='checkbox' id='nature_exp_cbox' checked>" )
 		      End If
 		      
-		      strHTML = strHTML.Replace ( "{{perception}}", PCModule.SK_Perception_Dict.Lookup ( "total", "default" ).StringValue )
-		      intProf = PCModule.SK_Perception_Dict.Lookup ( "prof", 0 ).IntegerValue
+		      strHTML = strHTML.Replace( "{{perception}}", PCModule.SK_Perception_Dict.Lookup( "total", "default" ).StringValue )
+		      intProf = PCModule.SK_Perception_Dict.Lookup( "prof", 0 ).IntegerValue
 		      If intProf = 1 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='perception_prof_cbox'>", "<input type='checkbox' id='perception_prof_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='perception_prof_cbox'>", "<input type='checkbox' id='perception_prof_cbox' checked>" )
 		      ElseIf intProf = 2 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='perception_exp_cbox'>", "<input type='checkbox' id='perception_exp_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='perception_exp_cbox'>", "<input type='checkbox' id='perception_exp_cbox' checked>" )
 		      End If
 		      
-		      strHTML = strHTML.Replace ( "{{performance}}", PCModule.SK_Performance_Dict.Lookup ( "total", "default" ).StringValue )
-		      intProf = PCModule.SK_Performance_Dict.Lookup ( "prof", 0 ).IntegerValue
+		      strHTML = strHTML.Replace( "{{performance}}", PCModule.SK_Performance_Dict.Lookup( "total", "default" ).StringValue )
+		      intProf = PCModule.SK_Performance_Dict.Lookup( "prof", 0 ).IntegerValue
 		      If intProf = 1 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='performance_prof_cbox'>", "<input type='checkbox' id='performance_prof_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='performance_prof_cbox'>", "<input type='checkbox' id='performance_prof_cbox' checked>" )
 		      ElseIf intProf = 2 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='performance_exp_cbox'>", "<input type='checkbox' id='performance_exp_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='performance_exp_cbox'>", "<input type='checkbox' id='performance_exp_cbox' checked>" )
 		      End If
 		      
-		      strHTML = strHTML.Replace ( "{{persuasion}}", PCModule.SK_Persuasion_Dict.Lookup ( "total", "default" ).StringValue )
-		      intProf = PCModule.SK_Persuasion_Dict.Lookup ( "prof", 0 ).IntegerValue
+		      strHTML = strHTML.Replace( "{{persuasion}}", PCModule.SK_Persuasion_Dict.Lookup( "total", "default" ).StringValue )
+		      intProf = PCModule.SK_Persuasion_Dict.Lookup( "prof", 0 ).IntegerValue
 		      If intProf = 1 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='persuasion_prof_cbox'>", "<input type='checkbox' id='persuasion_prof_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='persuasion_prof_cbox'>", "<input type='checkbox' id='persuasion_prof_cbox' checked>" )
 		      ElseIf intProf = 2 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='persuasion_exp_cbox'>", "<input type='checkbox' id='persuasion_exp_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='persuasion_exp_cbox'>", "<input type='checkbox' id='persuasion_exp_cbox' checked>" )
 		      End If
 		      
-		      strHTML = strHTML.Replace ( "{{religion}}", PCModule.SK_Religion_Dict.Lookup ( "total", "default" ).StringValue )
-		      intProf = PCModule.SK_Religion_Dict.Lookup ( "prof", 0 ).IntegerValue
+		      strHTML = strHTML.Replace( "{{religion}}", PCModule.SK_Religion_Dict.Lookup( "total", "default" ).StringValue )
+		      intProf = PCModule.SK_Religion_Dict.Lookup( "prof", 0 ).IntegerValue
 		      If intProf = 1 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='religion_prof_cbox'>", "<input type='checkbox' id='religion_prof_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='religion_prof_cbox'>", "<input type='checkbox' id='religion_prof_cbox' checked>" )
 		      ElseIf intProf = 2 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='religion_exp_cbox'>", "<input type='checkbox' id='religion_exp_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='religion_exp_cbox'>", "<input type='checkbox' id='religion_exp_cbox' checked>" )
 		      End If
 		      
-		      strHTML = strHTML.Replace ( "{{sleight_of_hand}}", PCModule.SK_SlightOfHand_Dict.Lookup ( "total", "default" ).StringValue )
-		      intProf = PCModule.SK_SlightOfHand_Dict.Lookup ( "prof", 0 ).IntegerValue
+		      strHTML = strHTML.Replace( "{{sleight_of_hand}}", PCModule.SK_SlightOfHand_Dict.Lookup( "total", "default" ).StringValue )
+		      intProf = PCModule.SK_SlightOfHand_Dict.Lookup( "prof", 0 ).IntegerValue
 		      If intProf = 1 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='sleight_of_hand_prof_cbox'>", "<input type='checkbox' id='sleight_of_hand_prof_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='sleight_of_hand_prof_cbox'>", "<input type='checkbox' id='sleight_of_hand_prof_cbox' checked>" )
 		      ElseIf intProf = 2 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='sleight_of_hand_exp_cbox'>", "<input type='checkbox' id='sleight_of_hand_exp_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='sleight_of_hand_exp_cbox'>", "<input type='checkbox' id='sleight_of_hand_exp_cbox' checked>" )
 		      End If
 		      
-		      strHTML = strHTML.Replace ( "{{stealth}}", PCModule.SK_Stealth_Dict.Lookup ( "total", "default" ).StringValue )
-		      intProf = PCModule.SK_Stealth_Dict.Lookup ( "prof", 0 ).IntegerValue
+		      strHTML = strHTML.Replace( "{{stealth}}", PCModule.SK_Stealth_Dict.Lookup( "total", "default" ).StringValue )
+		      intProf = PCModule.SK_Stealth_Dict.Lookup( "prof", 0 ).IntegerValue
 		      If intProf = 1 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='stealth_prof_cbox'>", "<input type='checkbox' id='stealth_prof_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='stealth_prof_cbox'>", "<input type='checkbox' id='stealth_prof_cbox' checked>" )
 		      ElseIf intProf = 2 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='stealth_exp_cbox'>", "<input type='checkbox' id='stealth_exp_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='stealth_exp_cbox'>", "<input type='checkbox' id='stealth_exp_cbox' checked>" )
 		      End If
 		      
-		      strHTML = strHTML.Replace ( "{{survival}}", PCModule.SK_Survival_Dict.Lookup ( "total", "default" ).StringValue )
-		      intProf = PCModule.SK_Survival_Dict.Lookup ( "prof", 0 ).IntegerValue
+		      strHTML = strHTML.Replace( "{{survival}}", PCModule.SK_Survival_Dict.Lookup( "total", "default" ).StringValue )
+		      intProf = PCModule.SK_Survival_Dict.Lookup( "prof", 0 ).IntegerValue
 		      If intProf = 1 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='survival_prof_cbox'>", "<input type='checkbox' id='survival_prof_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='survival_prof_cbox'>", "<input type='checkbox' id='survival_prof_cbox' checked>" )
 		      ElseIf intProf = 2 Then
-		        strHTML = strHTML.Replace ( "<input type='checkbox' id='survival_exp_cbox'>", "<input type='checkbox' id='survival_exp_cbox' checked>" )
+		        strHTML = strHTML.Replace( "<input type='checkbox' id='survival_exp_cbox'>", "<input type='checkbox' id='survival_exp_cbox' checked>" )
 		      End If
 		      
-		      strHTML = strHTML.Replace ( "{{char_notes}}", PCModule.Notes )
+		      strHTML = strHTML.Replace( "{{char_notes}}", PCModule.Notes )
 		      
 		      // Loop thru the array of InventoryList Dictionaries
 		      // replace {{inventorylist}} with fully fledged out table
@@ -616,19 +620,19 @@ End
 		      
 		      For x As Integer = 0 To PCModule.InventoryList.Count - 1
 		        strInventory = strInventory + " <tr> " + EndOfLine
-		        strInventory = strInventory + " <td> " + PCModule.InventoryList ( x ).Lookup ( "count", "" ).StringValue + " </td> " + EndOfLine
-		        strInventory = strInventory + " <td> " + PCModule.InventoryList ( x ).Lookup ( "name", "" ).StringValue + " </td> " + EndofLine 
-		        strInventory = strInventory + " <td> " + PCModule.InventoryList ( x ).Lookup ( "attuned", "" ).StringValue + " </td> " + EndOfLine
-		        strInventory = strInventory + " <td> " + PCModule.InventoryList ( x ).Lookup ( "cost", "" ).StringValue + " </td> " + EndOfLine
-		        strInventory = strInventory + " <td> " + PCModule.InventoryList ( x ).Lookup ( "carried", "" ).StringValue + " </td> " + EndOfLine
-		        strInventory = strInventory + " <td> " + PCModule.InventoryList ( x ).Lookup ( "rarity", "" ).StringValue + " </td> " + EndOfLine
-		        strInventory = strInventory + " <td> " + PCModule.InventoryList ( x ).Lookup ( "properties", "" ).StringValue + " </td> " + EndOfLine
-		        strInventory = strInventory + " <td> " + PCModule.InventoryList ( x ).Lookup ( "description", "" ).StringValue + " </td> " + EndOfLine
+		        strInventory = strInventory + " <td> " + PCModule.InventoryList( x ).Lookup( "count", "" ).StringValue + " </td> " + EndOfLine
+		        strInventory = strInventory + " <td> " + PCModule.InventoryList( x ).Lookup( "name", "" ).StringValue + " </td> " + EndofLine 
+		        strInventory = strInventory + " <td> " + PCModule.InventoryList( x ).Lookup( "attuned", "" ).StringValue + " </td> " + EndOfLine
+		        strInventory = strInventory + " <td> " + PCModule.InventoryList( x ).Lookup( "cost", "" ).StringValue + " </td> " + EndOfLine
+		        strInventory = strInventory + " <td> " + PCModule.InventoryList( x ).Lookup( "carried", "" ).StringValue + " </td> " + EndOfLine
+		        strInventory = strInventory + " <td> " + PCModule.InventoryList( x ).Lookup( "rarity", "" ).StringValue + " </td> " + EndOfLine
+		        strInventory = strInventory + " <td> " + PCModule.InventoryList( x ).Lookup( "properties", "" ).StringValue + " </td> " + EndOfLine
+		        strInventory = strInventory + " <td> " + PCModule.InventoryList( x ).Lookup( "description", "" ).StringValue + " </td> " + EndOfLine
 		        
 		        strInventory = strInventory + " </tr> " + EndOfLine
 		      Next x
 		      
-		      strHTML = strHTML.Replace ( "<div>{{inventorylist}}</div>", strInventory )
+		      strHTML = strHTML.Replace( "<div>{{inventorylist}}</div>", strInventory )
 		      // End of the Inventory work
 		      
 		      // Loop Thru class(es) and level(s)
@@ -640,68 +644,104 @@ End
 		      strSpellCount = ""
 		      For x As Integer = 0 To PCModule.ClassLvlDicts.Count - 1
 		        
-		        strClassLevel = strClassLevel + PCModule.ClassLvlDicts ( x ).Lookup ( "name", "" ).StringValue + " ( " + _
-		        PCModule.ClassLvlDicts ( x ).Lookup ( "specialization", "" ).StringValue + " ) Lvl: " + PCModule.ClassLvlDicts ( x ).Lookup ( "level", "" ).StringValue + " / "
+		        strClassLevel = strClassLevel + PCModule.ClassLvlDicts( x ).Lookup( "name", "" ).StringValue + " ( " + _
+		        PCModule.ClassLvlDicts( x ).Lookup( "specialization", "" ).StringValue + " ) Lvl: " + PCModule.ClassLvlDicts( x ).Lookup( "level", "" ).StringValue + " / "
 		        
-		        strSpellAbility = strSpellAbility + PCModule.ClassLvlDicts ( x ).Lookup ( "spellability", "" ).StringValue + " / "
+		        strSpellAbility = strSpellAbility + PCModule.ClassLvlDicts( x ).Lookup( "spellability", "" ).StringValue + " / "
 		        
-		        strSpellCount = strSpellCount + PCModule.ClassLvlDicts ( x ).Lookup ( "spellcountknown", "" ).StringValue + " / "
+		        strSpellCount = strSpellCount + PCModule.ClassLvlDicts( x ).Lookup( "spellcountknown", "" ).StringValue + " / "
 		        
-		        strHitDie = strHitDie + PCModule.ClassLvlDicts ( x ).Lookup ( "hddie", "" ).StringValue + " / "
+		        strHitDie = strHitDie + PCModule.ClassLvlDicts( x ).Lookup( "hddie", "" ).StringValue + " / "
 		        
 		      Next x
 		      
-		      strClassLevel = dropLastSegment ( strClassLevel, "/" )
-		      strSpellAbility = dropLastSegment ( strSpellAbility, "/" )
-		      strSpellCount = dropLastSegment ( strSpellCount, "/" )
-		      strHitDie = dropLastSegment ( strHitDie, "/" )
+		      strClassLevel = dropLastSegment( strClassLevel, "/" )
+		      strSpellAbility = dropLastSegment( strSpellAbility, "/" )
+		      strSpellCount = dropLastSegment( strSpellCount, "/" )
+		      strHitDie = dropLastSegment( strHitDie, "/" )
 		      
 		      
-		      strHTML = strHTML.Replace ( "{{character_class_level}}", strClassLevel )
-		      strHTML = strHTML.Replace ( "{{spellability}}", strSpellAbility )
-		      strHTML = strHTML.Replace ( "{{spellsknown}}", strSpellCount )
-		      strHTML = strHTML.Replace ( "{{hit_dice}}", strHitDie )
+		      strHTML = strHTML.Replace( "{{character_class_level}}", strClassLevel )
+		      strHTML = strHTML.Replace( "{{spellability}}", strSpellAbility )
+		      strHTML = strHTML.Replace( "{{spellsknown}}", strSpellCount )
+		      strHTML = strHTML.Replace( "{{hit_dice}}", strHitDie )
 		      // End of the class level work
 		      
 		      // start-spell-slots
-		      strHTML = strHTML.Replace ( "{{spell-slot-01}}", str ( PCModule.SpellSlot01 ) )
-		      strHTML = strHTML.Replace ( "{{spell-slot-02}}", str ( PCModule.SpellSlot02 ) )
-		      strHTML = strHTML.Replace ( "{{spell-slot-03}}", str ( PCModule.SpellSlot03 ) )
-		      strHTML = strHTML.Replace ( "{{spell-slot-04}}", str ( PCModule.SpellSlot04 ) )
-		      strHTML = strHTML.Replace ( "{{spell-slot-05}}", str ( PCModule.SpellSlot05 ) )
-		      strHTML = strHTML.Replace ( "{{spell-slot-06}}", str ( PCModule.SpellSlot06 ) )
-		      strHTML = strHTML.Replace ( "{{spell-slot-07}}", str ( PCModule.SpellSlot07 ) )
-		      strHTML = strHTML.Replace ( "{{spell-slot-08}}", str ( PCModule.SpellSlot08 ) )
-		      strHTML = strHTML.Replace ( "{{spell-slot-09}}", str ( PCModule.SpellSlot09 ) )
+		      strHTML = strHTML.Replace( "{{spell-slot-01}}", str( PCModule.SpellSlot01 ) )
+		      strHTML = strHTML.Replace( "{{spell-slot-02}}", str( PCModule.SpellSlot02 ) )
+		      strHTML = strHTML.Replace( "{{spell-slot-03}}", str( PCModule.SpellSlot03 ) )
+		      strHTML = strHTML.Replace( "{{spell-slot-04}}", str( PCModule.SpellSlot04 ) )
+		      strHTML = strHTML.Replace( "{{spell-slot-05}}", str( PCModule.SpellSlot05 ) )
+		      strHTML = strHTML.Replace( "{{spell-slot-06}}", str( PCModule.SpellSlot06 ) )
+		      strHTML = strHTML.Replace( "{{spell-slot-07}}", str( PCModule.SpellSlot07 ) )
+		      strHTML = strHTML.Replace( "{{spell-slot-08}}", str( PCModule.SpellSlot08 ) )
+		      strHTML = strHTML.Replace( "{{spell-slot-09}}", str( PCModule.SpellSlot09 ) )
 		      // end-spell-slots
 		      
 		      // start-spells
-		      Var strSpells As String
+		      
 		      strSpells = ""
-		      For x As Integer = 0 To PCModule.Spells.Count - 1
-		        strSpells = strSpells + " <tr> " + EndOfLine
-		        strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "level", "" ).StringValue + " </td> " + EndOfLine
-		        strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "name", "" ).StringValue + " </td> " + EndofLine 
-		        strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "castingtime", "" ).StringValue + " </td> " + EndOfLine
-		        strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "components", "" ).StringValue + " </td> " + EndOfLine
-		        strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "duration", "" ).StringValue + " </td> " + EndOfLine
-		        strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "range", "" ).StringValue + " </td> " + EndOfLine
-		        // strSpells = strSpells + " <td> " + PCModule.Spells(x).Lookup("source", "").StringValue + " </td> " + EndOfLine
-		        strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "description", "" ).StringValue + " </td> " + EndOfLine
+		      oSQL.Reset( )
+		      oSQL.StatementType = eStatementType.Type_Select
+		      oSQL.AddTable "spell_list"
+		      oSQL.AddOrderClause "spell_level"
+		      oSQL.AddOrderClause "spell_name"
+		      
+		      Try
+		        rs = db.SelectSQL( oSQL.SQL )
 		        
-		        strSpells = strSpells + " </tr> " + EndOfLine
-		      Next x
+		        If rs <> Nil Then
+		          For Each row As DatabaseRow In rs
+		            
+		            strSpells = strSpells + " <tr> " + EndOfLine
+		            strSpells = strSpells + " <td> " + str( row.Column( "spell_level" ).IntegerValue ) + " </td> " + EndOfLine
+		            strSpells = strSpells + " <td> " + row.Column( "spell_name" ).StringValue + " </td> " + EndOfLine
+		            strSpells = strSpells + " <td> " + row.Column( "casting_time" ).StringValue + " </td> " + EndOfLine
+		            strSpells = strSpells + " <td> " + row.Column( "components" ).StringValue + " </td> " + EndOfLine
+		            strSpells = strSpells + " <td> " + row.Column( "spell_duration" ).StringValue + " </td> " + EndOfLine
+		            ' strSpells = strSpells + " <td> " + row.Column( "group_txt" ).StringValue + " </td> " + EndOfLine
+		            ' strSpells = strSpells + " <td> " + row.Column( "prepared_count" ).StringValue + " </td> " + EndOfLine
+		            strSpells = strSpells + " <td> " + row.Column( "range_txt" ).StringValue + " </td> " + EndOfLine
+		            ' strSpells = strSpells + " <td> " + row.Column( "school_txt" ).StringValue + " </td> " + EndOfLine
+		            ' strSpells = strSpells + " <td> " + row.Column( "source_txt" ).StringValue + " </td> " + EndOfLine
+		            ' strSpells = strSpells + " <td> " + row.Column( "action_txt" ).StringValue + " </td> " + EndOfLine
+		            strSpells = strSpells + " <td> " + row.Column( "desc_txt" ).StringValue + " </td> " + EndOfLine
+		            
+		          Next
+		          
+		        End If
+		        
+		      Catch e As DatabaseException
+		        MessageBox( e.Message )
+		      End Try
+		      
+		      ' Var strSpells As String
+		      ' strSpells = ""
+		      ' For x As Integer = 0 To PCModule.Spells.Count - 1
+		      ' strSpells = strSpells + " <tr> " + EndOfLine
+		      ' strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "level", "" ).StringValue + " </td> " + EndOfLine
+		      ' strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "name", "" ).StringValue + " </td> " + EndofLine 
+		      ' strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "castingtime", "" ).StringValue + " </td> " + EndOfLine
+		      ' strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "components", "" ).StringValue + " </td> " + EndOfLine
+		      ' strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "duration", "" ).StringValue + " </td> " + EndOfLine
+		      ' strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "range", "" ).StringValue + " </td> " + EndOfLine
+		      ' // strSpells = strSpells + " <td> " + PCModule.Spells(x).Lookup("source", "").StringValue + " </td> " + EndOfLine
+		      ' strSpells = strSpells + " <td> " + PCModule.Spells ( x ).Lookup ( "description", "" ).StringValue + " </td> " + EndOfLine
+		      ' 
+		      ' strSpells = strSpells + " </tr> " + EndOfLine
+		      ' Next x
 		      // end-spells
 		      
-		      strHTML = strHTML.Replace ( "<div>{{spelllist}}</div>", strSpells )
+		      strHTML = strHTML.Replace( "<div>{{spelllist}}</div>", strSpells )
 		      
 		      // start-traitlist
 		      Var strTraits As String
 		      strTraits = ""
 		      For x As Integer = 0 To PCModule.strTraits.Count - 1
-		        strTraits = strTraits + PCModule.strTraits ( x ) + EndOfLine
+		        strTraits = strTraits + PCModule.strTraits( x ) + EndOfLine
 		      Next x
-		      strHTML = strHTML.Replace ( "{{traitlist}}", strTraits )
+		      strHTML = strHTML.Replace( "{{traitlist}}", strTraits )
 		      // end-traitlist
 		      
 		      // start-weaponlist
@@ -709,52 +749,52 @@ End
 		      strWeapons = ""
 		      For x As Integer = 0 To PCModule.WeaponList.Count - 1
 		        strWeapons = strWeapons + " <tr> " + EndOfLine
-		        strWeapons = strWeapons + " <td> " + PCModule.WeaponList ( x ).Lookup ( "name", "" ).StringValue + " </td> " + EndOfLine
-		        strWeapons = strWeapons + " <td> " + PCModule.WeaponList ( x ).Lookup ( "maxammo", "" ).StringValue + " </td> " + EndofLine 
-		        strWeapons = strWeapons + " <td> " + PCModule.WeaponList ( x ).Lookup ( "prof", "" ).StringValue + " </td> " + EndOfLine
-		        strWeapons = strWeapons + " <td> " + PCModule.WeaponList ( x ).Lookup ( "properties", "" ).StringValue + " </td> " + EndOfLine
-		        strWeapons = strWeapons + " <td> " + PCModule.WeaponList ( x ).Lookup ( "damagelist", "" ).StringValue + " </td> " + EndOfLine
+		        strWeapons = strWeapons + " <td> " + PCModule.WeaponList( x ).Lookup( "name", "" ).StringValue + " </td> " + EndOfLine
+		        strWeapons = strWeapons + " <td> " + PCModule.WeaponList( x ).Lookup( "maxammo", "" ).StringValue + " </td> " + EndofLine 
+		        strWeapons = strWeapons + " <td> " + PCModule.WeaponList( x ).Lookup( "prof", "" ).StringValue + " </td> " + EndOfLine
+		        strWeapons = strWeapons + " <td> " + PCModule.WeaponList( x ).Lookup( "properties", "" ).StringValue + " </td> " + EndOfLine
+		        strWeapons = strWeapons + " <td> " + PCModule.WeaponList( x ).Lookup( "damagelist", "" ).StringValue + " </td> " + EndOfLine
 		        
 		        strWeapons = strWeapons + " </tr> " + EndOfLine
 		      Next x
 		      
-		      strHTML = strHTML.Replace ( "<div>{{weaponlist}}</div>", strWeapons )
+		      strHTML = strHTML.Replace( "<div>{{weaponlist}}</div>", strWeapons )
 		      // end-weaponlist
 		      
 		      // start-featlist
 		      Var strFeatList As String
 		      
 		      For x As Integer = 0 To PCModule.FeatDict.Count - 1
-		        strFeatList = strFeatList + PCModule.FeatDict ( x ).Lookup ( "name", "" ).StringValue + ": " + PCModule.FeatDict ( x ).Lookup ( "description", "" ).StringValue + "<br>"
+		        strFeatList = strFeatList + PCModule.FeatDict( x ).Lookup( "name", "" ).StringValue + ": " + PCModule.FeatDict( x ).Lookup( "description", "" ).StringValue + "<br>"
 		      Next x
-		      strHTML = strHTML.Replace ( "<div>{{feat_list}}</div>", strFeatList )
+		      strHTML = strHTML.Replace( "<div>{{feat_list}}</div>", strFeatList )
 		      // end-featlist
 		      
 		      // start-featurelist
 		      Var strFeature As String
 		      For x As Integer = 0 To PCModule.FeatureListDict.Count - 1
-		        strFeature = strFeature + PCModule.FeatureListDict ( x ).Lookup ( "name", "" ).StringValue + ": " + PCModule.FeatureListDict ( x ).Lookup ( "description", "" ).StringValue + "<br>"
+		        strFeature = strFeature + PCModule.FeatureListDict( x ).Lookup( "name", "" ).StringValue + ": " + PCModule.FeatureListDict( x ).Lookup( "description", "" ).StringValue + "<br>"
 		      Next x
 		      
-		      strHTML = strHTML.Replace ( "<div>{{feature_list}}</div>", strFeature )
+		      strHTML = strHTML.Replace( "<div>{{feature_list}}</div>", strFeature )
 		      // end-featurelist
 		      
 		      // start-coinage
-		      strHTML = strHTML.Replace ( "<div>{{coinage}}</div>", PCModule.Money ) 
+		      strHTML = strHTML.Replace( "<div>{{coinage}}</div>", PCModule.Money ) 
 		      
 		      // end-coinage
 		      
 		      
 		      // Close out the process
-		      t.Write ( strHTML )
+		      t.Write( strHTML )
 		      t.Close
 		      
-		      System.GotoURL ( OutputFile.NativePath )
+		      System.GotoURL( OutputFile.NativePath )
 		      
 		    Catch e As IOException
 		      ' handle error
 		    End Try
-		    MsgBox ( "Output file has been written" )
+		    MsgBox( "Output file has been written" )
 		  End If
 		End Sub
 	#tag EndMethod
@@ -1099,45 +1139,62 @@ End
 		Protected Sub ProcessSpells(NodeList As XMLNodeList)
 		  Var node, child, grandchild As XMLNode
 		  Var sValue As String
-		  Var SpellDict As New Dictionary
 		  Var strSpellDesc As String
+		  Var strSQL As String
+		  
+		  oSQL.Reset( )
+		  oSQL.StatementType = eStatementType.Type_Insert
+		  oSQL.AddTable "spell_list"
+		  
 		  
 		  For i As Integer = 0 To NodeList.Length - 1
-		    node = NodeList.Item ( i )
+		    node = NodeList.Item( i )
 		    For x As Integer = 0 To node.ChildCount - 1
-		      child = node.Child ( x )
+		      child = node.Child( x )
 		      
 		      sValue = child.Name ' here for debugging
 		      
 		      
-		      For y As Integer = 0 To child.ChildCount - 1
-		        grandchild = child.Child ( y )
+		      For y As Integer = 0 To child.ChildCount - 1  // iterate over all a single spells properties
+		        grandchild = child.Child( y )
 		        sValue = grandchild.Name
 		        
 		        If sValue = "level" Then
-		          SpellDict.Value ( "level" ) = grandchild.FirstChild.Value.ToInteger
+		          oSQL.AddField "spell_level"
+		          oSQL.AddValue grandchild.FirstChild.Value
 		        ElseIf sValue = "castingtime" Then
-		          SpellDict.Value ( "castingtime" ) = grandchild.FirstChild.Value
+		          oSQL.AddField "casting_time"
+		          oSQL.AddValue grandchild.FirstChild.Value
 		        ElseIf sValue = "components" Then
-		          SpellDict.Value ( "components" ) = grandchild.FirstChild.Value
+		          oSQL.AddField "components" 
+		          oSQL.AddValue grandchild.FirstChild.Value
 		        ElseIf sValue = "description" Then
-		          SpellDict.Value ( "description" ) = grandchild.ToString
-		          ' SpellDict.Value("description") = grandchild.FirstChild.FirstChild.Value
+		          oSQL.AddField "desc_txt"
+		          oSQL.AddValue grandchild.ToString
 		        ElseIf sValue = "name" Then
-		          SpellDict.Value ( "name" ) = grandchild.FirstChild.Value
+		          oSQL.AddField "spell_name"
+		          oSQL.AddValue grandchild.FirstChild.Value
 		        ElseIf sValue = "duration" Then
-		          SpellDict.Value ( "duration" ) = grandchild.FirstChild.Value
+		          oSQL.AddField "spell_duration"
+		          oSQL.AddValue grandchild.FirstChild.Value
 		        ElseIf sValue = "group" Then
-		          SpellDict.Value ( "group" ) = grandchild.FirstChild.Value
+		          oSQL.AddField "group_txt"
+		          oSQL.AddValue grandchild.FirstChild.Value
 		        ElseIf sValue = "prepared" Then
-		          SpellDict.Value ( "prepared" ) = grandchild.FirstChild.Value
+		          oSQL.AddField "prepared_count"
+		          oSQL.AddValue grandchild.FirstChild.Value
 		        ElseIf sValue = "range" Then
-		          SpellDict.Value ( "range" ) = grandchild.FirstChild.Value
+		          oSQL.AddField "range_txt"
+		          osql.AddValue grandchild.FirstChild.Value
 		        ElseIf sValue = "school" Then
-		          SpellDict.Value ( "school" ) = grandchild.FirstChild.Value
+		          oSQL.AddField "school_txt"
+		          oSQL.AddValue grandchild.FirstChild.Value
 		        ElseIf sValue = "source" Then
-		          SpellDict.Value ( "source" ) = grandchild.FirstChild.Value
+		          oSQL.AddField "source_txt"
+		          oSQL.AddValue grandchild.FirstChild.Value
 		        ElseIf sValue = "actions" Then
+		          oSQL.AddField "action_txt"
+		          oSQL.AddValue grandchild.ToString
 		          strSpellDesc = ""
 		          For z As Integer = 0 To grandchild.ChildCount - 1
 		            ' If grandchild.Child(z).Name = "p" Then
@@ -1147,10 +1204,20 @@ End
 		          ' SpellDict.Value("description") = strSpellDesc
 		        End If
 		        
-		      Next y
-		      PCModule.Spells.Add ( SpellDict.Clone )
-		      SpellDict.RemoveAll ( )
-		    Next X
+		      Next y // iterate over single spell properties
+		      
+		      // Insert spell record into table
+		      strSQL = strSQL + oSQL.SQL + EndOfLine
+		      
+		      Try 
+		        db.ExecuteSQL( oSQL.SQL )
+		      Catch e As DatabaseException
+		        MessageBox( e.Message )
+		      End Try
+		      oSQL.ClearFields
+		      oSQL.ClearValues
+		    Next X  // next spell
+		    
 		  Next i
 		End Sub
 	#tag EndMethod
@@ -1280,6 +1347,10 @@ End
 		Protected InputFile As FolderItem
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		oSQL As cSmartSQL
+	#tag EndProperty
+
 	#tag Property, Flags = &h1
 		Protected OutputFile As FolderItem
 	#tag EndProperty
@@ -1299,6 +1370,10 @@ End
 	#tag Property, Flags = &h1
 		Protected xmlWalk As XMLDocument
 	#tag EndProperty
+
+
+	#tag Constant, Name = k_ddl, Type = String, Dynamic = False, Default = \"CREATE TABLE spell_list\r(spell_level INTEGER\x2C\rcasting_time VARCHAR(25)\x2C\rcomponents VARCHAR(25)\x2C\rdesc_txt VARCHAR(25)\x2C\rspell_name VARCHAR(25)\x2C\rspell_duration VARCHAR(25)\x2C\rgroup_txt VARCHAR(25)\x2C\rprepared_count VARCHAR(25)\x2C\rrange_txt VARCHAR(25)\x2C\rschool_txt VARCHAR(25)\x2C\rsource_txt VARCHAR(25)\x2C\raction_txt VARCHAR(25));", Scope = Public
+	#tag EndConstant
 
 
 #tag EndWindowCode
@@ -1548,11 +1623,11 @@ End
 		  ProcessLanguage ( xmlList ) 
 		  
 		  // spell slots
-		  xmlList = xmlWalk.XQL ( "//character/powermeta/spellslots1/max" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
-		  PCModule.SpellSlot01 = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots1/max" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.SpellSlot01 = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/powermeta/spellslots2/max" )
+		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots2/max" )
 		  sValue = xmlList.Item ( 0 ).FirstChild.Value
 		  PCModule.SpellSlot02 = val ( sValue )
 		  
@@ -1569,24 +1644,62 @@ End
 		  PCModule.SpellSlot05 = val ( sValue )
 		  
 		  xmlList = xmlWalk.XQL ( "//character/powermeta/spellslots6/max" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
-		  PCModule.SpellSlot06 = val ( sValue )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.SpellSlot06 = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/powermeta/spellslots7/max" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
-		  PCModule.SpellSlot07 = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots7/max" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.SpellSlot07 = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/powermeta/spellslots8/max" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
-		  PCModule.SpellSlot08 = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots8/max" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.SpellSlot08 = val( sValue )
 		  
-		  xmlList = xmlWalk.XQL ( "//character/powermeta/spellslots9/max" )
-		  sValue = xmlList.Item ( 0 ).FirstChild.Value
-		  PCModule.SpellSlot09 = val ( sValue )
+		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots9/max" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.SpellSlot09 = val( sValue )
+		  
+		  // Pact magic spell slots
+		  xmlList = xmlWalk.XQL( "//character/powermeta/pactmagicslots1/max" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.PactMagic01 = val( sValue )
+		  
+		  xmlList = xmlWalk.XQL( "//character/powermeta/pactmagicslots2/max" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.PactMagic02 = val( sValue )
+		  
+		  xmlList = xmlWalk.XQL( "//character/powermeta/pactmagicslots3/max" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.PactMagic03 = val( sValue )
+		  
+		  xmlList = xmlWalk.XQL( "//character/powermeta/pactmagicslots4/max" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.PactMagic04 = val( sValue )
+		  
+		  xmlList = xmlWalk.XQL( "//character/powermeta/pactmagicslots5/max" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.PactMagic05 = val( sValue )
+		  
+		  xmlList = xmlWalk.XQL( "//character/powermeta/pactmagicslots6/max" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.PactMagic06 = val( sValue )
+		  
+		  xmlList = xmlWalk.XQL( "//character/powermeta/pactmagicslots7/max" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.PactMagic07 = val( sValue )
+		  
+		  xmlList = xmlWalk.XQL( "//character/powermeta/pactmagicslots8/max" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.PactMagic08 = val( sValue )
+		  
+		  xmlList = xmlWalk.XQL( "//character/powermeta/pactmagicslots9/max" )
+		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  PCModule.PactMagic09 = val( sValue )
+		  
 		  
 		  #Pragma BreakOnExceptions Off
 		  Try
-		    xmlList = xmlWalk.XQL ( "//character/languagelist/id-00002/name" )
+		    xmlList = xmlWalk.XQL( "//character/languagelist/id-00002/name" )
 		    If xmlList <> Nil Then
 		      sValue = xmlList.Item ( 0 ).FirstChild.Value
 		    End If

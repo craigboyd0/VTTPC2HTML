@@ -129,6 +129,42 @@ Protected Module PCModule
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
+		Protected PactMagic01 As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected PactMagic02 As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected PactMagic03 As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected PactMagic04 As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected PactMagic05 As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected PactMagic06 As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected PactMagic07 As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected PactMagic08 As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected PactMagic09 As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
 		Protected PassPerc As Integer = 0
 	#tag EndProperty
 
@@ -226,10 +262,6 @@ Protected Module PCModule
 
 	#tag Property, Flags = &h1
 		Protected Speed As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h1
-		Protected Spells() As Dictionary
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

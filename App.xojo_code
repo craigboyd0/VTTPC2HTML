@@ -21,6 +21,8 @@ Inherits DesktopApplication
 		  xmlFileType.Extensions = "xml"
 		  
 		  
+		  
+		  
 		End Sub
 	#tag EndEvent
 
@@ -96,7 +98,7 @@ Inherits DesktopApplication
 	#tag Constant, Name = PadParInside, Type = Boolean, Dynamic = False, Default = \"True", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = PadParOutside, Type = Boolean, Dynamic = False, Default = \"True", Scope = Public
+	#tag Constant, Name = PadParOutside, Type = Boolean, Dynamic = False, Default = \"False", Scope = Public
 	#tag EndConstant
 
 
