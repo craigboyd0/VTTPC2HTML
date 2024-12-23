@@ -887,8 +887,12 @@ End
 		        
 		      Next y
 		      
-		      strMoney = strMoney + strCoin + strAmount + EndOfLine
+		      If strCoin <> "" Then
+		        strMoney = strMoney + strCoin + strAmount + EndOfLine
+		      End If
 		      
+		      strCoin = ""
+		      strAmount = ""
 		    Next X
 		    strMoney = strMoney + "</ul>"
 		    PCModule.Money = strMoney
@@ -1346,7 +1350,11 @@ End
 		              If gggrandchild.Name = "bonus" Then
 		                strWeaponDesc = strWeaponDesc + " bonus: " + str ( gggrandchild.FirstChild.Value ) + "<br>"
 		              ElseIf gggrandchild.Name = "dice" Then
-		                strWeaponDesc = strWeaponDesc + " dice: " + gggrandchild.FirstChild.Value + "<br>"
+		                If gggrandchild.FirstChild = nil Then
+		                  
+		                Else
+		                  strWeaponDesc = strWeaponDesc + " dice: " + gggrandchild.FirstChild.Value + "<br>"
+		                End If
 		              ElseIf gggrandchild.Name = "stat" Then 
 		                strWeaponDesc = strWeaponDesc + " stat: " + gggrandchild.FirstChild.Value + "<br>"
 		              ElseIf gggrandchild.Name = "type" Then
@@ -1478,318 +1486,437 @@ End
 		  Var sValue As String
 		  
 		  xmlList = xmlWalk.XQL( "//character/name" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.PCName = sValue
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.PCName = sValue
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/abilities/charisma/score" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value  // this will return the charisma score
-		  PCModule.CHRNbr = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value  // this will return the charisma score
+		    PCModule.CHRNbr = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/abilities/charisma/bonus" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value  
-		  PCModule.CHRBonus = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value  
+		    PCModule.CHRBonus = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/abilities/charisma/save" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value  
-		  PCModule.CHRSave = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value  
+		    PCModule.CHRSave = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/abilities/constitution/score" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value  // this will return the charisma score
-		  PCModule.CONNbr = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value  // this will return the charisma score
+		    PCModule.CONNbr = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/abilities/constitution/bonus" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value  
-		  PCModule.CONBonus = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value  
+		    PCModule.CONBonus = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/abilities/constitution/save" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value  
-		  PCModule.CONSave = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value  
+		    PCModule.CONSave = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/abilities/dexterity/score" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value  // this will return the charisma score
-		  PCModule.DEXNbr = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value  // this will return the charisma score
+		    PCModule.DEXNbr = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/abilities/dexterity/bonus" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value  
-		  PCModule.DEXBonus = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value  
+		    PCModule.DEXBonus = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/abilities/dexterity/save" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value  
-		  PCModule.DEXSave = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value  
+		    PCModule.DEXSave = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/abilities/intelligence/score" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value  // this will return the charisma score
-		  PCModule.INTNbr = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value  // this will return the charisma score
+		    PCModule.INTNbr = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/abilities/intelligence/bonus" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value  
-		  PCModule.INTBonus = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value  
+		    PCModule.INTBonus = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/abilities/intelligence/save" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value  
-		  PCModule.INTSave = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value  
+		    PCModule.INTSave = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/abilities/strength/score" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value  // this will return the charisma score
-		  PCModule.STRNbr = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value  // this will return the charisma score
+		    PCModule.STRNbr = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/abilities/strength/bonus" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value  
-		  PCModule.STRBonus = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value  
+		    PCModule.STRBonus = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/abilities/strength/save" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value  
-		  PCModule.STRSave = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value  
+		    PCModule.STRSave = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/abilities/wisdom/score" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value  // this will return the charisma score
-		  PCModule.WISNbr = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value  // this will return the charisma score
+		    PCModule.WISNbr = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/abilities/wisdom/bonus" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value  
-		  PCModule.WISBonus = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value  
+		    PCModule.WISBonus = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/abilities/wisdom/save" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value  
-		  PCModule.WISSave = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value  
+		    PCModule.WISSave = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/defenses/ac/total" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.ACTotal = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.ACTotal = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/defenses/ac/prof" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.ACProf = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.ACProf = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/encumbrance/encumbered" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.Encumbered = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.Encumbered = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/encumbrance/encumberedheavy" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.Enc_Heavy = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.Enc_Heavy = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/encumbrance/liftpushdrag" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.Enc_LiftPushDrag = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.Enc_LiftPushDrag = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/encumbrance/load" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.Enc_Load = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.Enc_Load = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/encumbrance/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.Enc_Max = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.Enc_Max = val( sValue )
+		  End If
 		  
+		  ' #Pragma BreakOnExceptions Off
+		  ' Try
 		  xmlList = xmlWalk.XQL( "//character/deity" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.Deity = sValue
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.Deity = sValue
+		  End If
+		  ' Catch e As XMLException
+		  ' End Try
+		  ' #Pragma BreakOnExceptions On
 		  
-		  #Pragma BreakOnExceptions Off
-		  Try
-		    xmlList = xmlWalk.XQL( "//character/alignment" )
-		    If xmlList <> Nil Then
-		      sValue = xmlList.Item( 0 ).FirstChild.Value
-		      PCModule.Alignment = sValue
-		    End If
-		  Catch e As XMLException
-		    
-		  End Try
-		  #Pragma BreakOnExceptions Default ' Restore setting from Project menu
+		  xmlList = xmlWalk.XQL( "//character/alignment" )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.Alignment = sValue
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/perception" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.PassPerc = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.PassPerc = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/speed/total" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.Speed = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.Speed = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/exp" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.XP = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.XP = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/initiative/total" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.Init = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.Init = val( sValue )
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/background" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.Background = sValue
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.Background = sValue
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/hp/total" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.HPTotal = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.HPTotal = val( sValue )
+		  End If
 		  
-		  #Pragma BreakOnExceptions Off
-		  Try
-		    xmlList = xmlWalk.XQL( "//character/age" )
-		    If xmlList <> Nil Then
-		      sValue = xmlList.Item( 0 ).FirstChild.Value
-		      PCModule.Age = val( sValue )
-		    End If
-		  Catch e As XMLException
-		    
-		  End Try
-		  #Pragma BreakOnExceptions Default ' Restore setting from Project menu
+		  xmlList = xmlWalk.XQL( "//character/age" )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.Age = val( sValue )
+		  End If
 		  
-		  #Pragma BreakOnExceptions Off
-		  Try
-		    xmlList = xmlWalk.XQL( "//character/notes" )
+		  xmlList = xmlWalk.XQL( "//character/notes" )
+		  If xmlList.Length > 0 Then
 		    sValue = xmlList.Item( 0 ).FirstChild.Value
 		    PCModule.Notes = sValue.ReplaceAll( "\n", "<br>" )
-		  Catch e As XMLException
-		  End Try
-		  #Pragma BreakOnExceptions Default
+		  End If
 		  
-		  #Pragma BreakOnExceptions Off
-		  Try
-		    xmlList = xmlWalk.XQL( "//character/ideals" )
+		  xmlList = xmlWalk.XQL( "//character/ideals" )
+		  If xmlList.Length > 0 Then
 		    sValue = xmlList.Item( 0 ).FirstChild.Value
 		    PCModule.Ideals = sValue.ReplaceAll( "\n", "<br>" )
-		  Catch e As XMLException
-		  End Try
-		  #Pragma BreakOnExceptions Default
+		  End If
 		  
-		  #Pragma BreakOnExceptions Off
-		  Try
-		    xmlList = xmlWalk.XQL( "//character/flaws" )
+		  xmlList = xmlWalk.XQL( "//character/flaws" )
+		  If xmlList.Length > 0 Then
 		    sValue = xmlList.Item( 0 ).FirstChild.Value
 		    PCModule.Flaws = sValue.ReplaceAll( "\n", "<br>" )
-		  Catch e As XMLException
-		  End Try
-		  #Pragma BreakOnExceptions Default
+		  End If
 		  
-		  #Pragma BreakOnExceptions Off
-		  Try
-		    xmlList = xmlWalk.XQL( "//character/bonds" )
+		  xmlList = xmlWalk.XQL( "//character/bonds" )
+		  If xmlList.Length > 0 Then
 		    sValue = xmlList.Item( 0 ).FirstChild.Value
 		    PCModule.Bonds = sValue.ReplaceAll( "\n", "<br>" )
-		  Catch e As XMLException
-		  End Try
-		  #Pragma BreakOnExceptions Default
+		  End If
 		  
-		  #Pragma BreakOnExceptions Off
-		  Try 
-		    xmlList = xmlWalk.XQL( "//character/appearance" )
+		  xmlList = xmlWalk.XQL( "//character/appearance" )
+		  If xmlList.Length > 0 Then
 		    sValue = xmlList.Item( 0 ).FirstChild.Value
 		    PCModule.Appearance = sValue
-		  Catch e As XMLException
-		    
-		  End Try
-		  #Pragma BreakOnExceptions Default ' Restore setting from Project menu
+		  End If
 		  
-		  xmlList = xmlWalk.XQL( "//character/classes/id-00001/hddie" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
+		  ' xmlList = xmlWalk.XQL( "//character/classes/id-00001/hddie" )
+		  ' sValue = xmlList.Item( 0 ).FirstChild.Value
 		  
 		  xmlList = xmlWalk.XQL( "//character/languagelist" )
 		  ProcessLanguage( xmlList ) 
 		  
 		  // spell slots
 		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots1/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.SpellSlot01 = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.SpellSlot01 = val( sValue )
+		  Else
+		    PCModule.SpellSlot01 = 0
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots2/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.SpellSlot02 = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.SpellSlot02 = val( sValue )
+		  Else
+		    PCModule.SpellSlot02 = 0
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots3/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.SpellSlot03 = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.SpellSlot03 = val( sValue )
+		  Else
+		    PCModule.SpellSlot03 = 0
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots4/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.SpellSlot04 = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.SpellSlot04 = val( sValue )
+		  Else
+		    PCModule.SpellSlot05 = 0
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots5/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.SpellSlot05 = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.SpellSlot05 = val( sValue )
+		  Else
+		    PCModule.SpellSlot05 = 0
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots6/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.SpellSlot06 = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.SpellSlot06 = val( sValue )
+		  Else
+		    PCModule.SpellSlot06 = 0
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots7/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.SpellSlot07 = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.SpellSlot07 = val( sValue )
+		  Else
+		    PCModule.SpellSlot07 = 0
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots8/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.SpellSlot08 = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.SpellSlot08 = val( sValue )
+		  Else
+		    PCModule.SpellSlot08 = 0
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/powermeta/spellslots9/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.SpellSlot09 = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.SpellSlot09 = val( sValue )
+		  Else
+		    PCModule.SpellSlot09 = 0
+		  End If
 		  
 		  // Pact magic spell slots
 		  xmlList = xmlWalk.XQL( "//character/powermeta/pactmagicslots1/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.PactMagic01 = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.PactMagic01 = val( sValue )
+		  Else
+		    PCModule.PactMagic01 = 0
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/powermeta/pactmagicslots2/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.PactMagic02 = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.PactMagic02 = val( sValue )
+		  Else
+		    PCModule.PactMagic02 = 0 
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/powermeta/pactmagicslots3/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.PactMagic03 = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.PactMagic03 = val( sValue )
+		  Else
+		    PCModule.PactMagic03 = 0 
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/powermeta/pactmagicslots4/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.PactMagic04 = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.PactMagic04 = val( sValue )
+		  Else
+		    PCModule.PactMagic04 = 0
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/powermeta/pactmagicslots5/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.PactMagic05 = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.PactMagic05 = val( sValue )
+		  Else
+		    PCModule.PactMagic05 = 0
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/powermeta/pactmagicslots6/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.PactMagic06 = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.PactMagic06 = val( sValue )
+		  Else
+		    PCModule.PactMagic06 = 0 
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/powermeta/pactmagicslots7/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.PactMagic07 = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.PactMagic07 = val( sValue )
+		  Else
+		    PCModule.PactMagic07 = 0 
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/powermeta/pactmagicslots8/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.PactMagic08 = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.PactMagic08 = val( sValue )
+		  Else
+		    PCModule.PactMagic08 = 0
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/powermeta/pactmagicslots9/max" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.PactMagic09 = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.PactMagic09 = val( sValue )
+		  Else
+		    PCModule.PactMagic09 = 0
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/profbonus" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.ProfBonus = val( sValue )
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.ProfBonus = val( sValue )
+		  Else
+		    PCModule.ProfBonus = 0
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/race" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.Race = sValue
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.Race = sValue
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/size" )
-		  sValue = xmlList.Item( 0 ).FirstChild.Value
-		  PCModule.PCSize = sValue
+		  If xmlList.Length > 0 Then
+		    sValue = xmlList.Item( 0 ).FirstChild.Value
+		    PCModule.PCSize = sValue
+		  End If
 		  
-		  
-		  
-		  #Pragma BreakOnExceptions Off
-		  Try
-		    xmlList = xmlWalk.XQL( "//character/weight" )
+		  xmlList = xmlWalk.XQL( "//character/weight" )
+		  If xmlList.Length > 0 Then
 		    sValue = xmlList.Item( 0 ).FirstChild.Value
 		    PCModule.Weight = sValue
-		  Catch err As XMLException
-		  End Try
-		  #Pragma BreakOnExceptions Default ' Restore setting from Project menu
+		  Else
+		    PCModule.Weight = ""
+		  End If
 		  
-		  #Pragma BreakOnExceptions Off
-		  Try
-		    xmlList = xmlWalk.XQL( "//character/height" )
+		  xmlList = xmlWalk.XQL( "//character/height" )
+		  If xmlList.Length > 0 Then
 		    sValue = xmlList.Item( 0 ).FirstChild.Value
 		    PCModule.Height = sValue
-		  Catch err As XMLException
-		  End Try
-		  #Pragma BreakOnExceptions Default ' Restore setting from Project menu
+		  Else
+		    PCModule.Height = ""
+		  End If
 		  
 		  xmlList = xmlWalk.XQL( "//character/skilllist" )
 		  ProcessPCAbilities( xmlList )
