@@ -387,6 +387,8 @@ End
 		    
 		  End If
 		  
+		  // In memory SQLiteDatabase for handling Spells
+		  
 		  db = New SQLiteDatabase
 		  Try
 		    db.Connect ( ) 
@@ -699,6 +701,7 @@ End
 		      oSQL.Reset( )
 		      oSQL.StatementType = eStatementType.Type_Select
 		      oSQL.AddTable "spell_list"
+		      oSQL.AddOrderClause "group_txt"
 		      oSQL.AddOrderClause "spell_level"
 		      oSQL.AddOrderClause "spell_name"
 		      
@@ -709,12 +712,12 @@ End
 		          For Each row As DatabaseRow In rs
 		            
 		            strSpells = strSpells + " <tr> " + EndOfLine
+		            strSpells = strSpells + " <td> " + row.Column( "group_txt" ).StringValue + " </td> " + EndOfLine
 		            strSpells = strSpells + " <td> " + str( row.Column( "spell_level" ).IntegerValue ) + " </td> " + EndOfLine
 		            strSpells = strSpells + " <td> " + row.Column( "spell_name" ).StringValue + " </td> " + EndOfLine
 		            strSpells = strSpells + " <td> " + row.Column( "casting_time" ).StringValue + " </td> " + EndOfLine
 		            strSpells = strSpells + " <td> " + row.Column( "components" ).StringValue + " </td> " + EndOfLine
 		            strSpells = strSpells + " <td> " + row.Column( "spell_duration" ).StringValue + " </td> " + EndOfLine
-		            ' strSpells = strSpells + " <td> " + row.Column( "group_txt" ).StringValue + " </td> " + EndOfLine
 		            ' strSpells = strSpells + " <td> " + row.Column( "prepared_count" ).StringValue + " </td> " + EndOfLine
 		            strSpells = strSpells + " <td> " + row.Column( "range_txt" ).StringValue + " </td> " + EndOfLine
 		            ' strSpells = strSpells + " <td> " + row.Column( "school_txt" ).StringValue + " </td> " + EndOfLine
@@ -1384,11 +1387,17 @@ End
 		  
 		  strHTML = input.ReadAll
 		  
+		  GoldTemplate = strHTML
+		  
 		  input.Close
 		  
 		End Sub
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h21
+		Private GoldTemplate As String
+	#tag EndProperty
 
 	#tag Property, Flags = &h1
 		Protected InputFile As FolderItem
@@ -1451,7 +1460,19 @@ End
 		    ' User Cancelled
 		  End If
 		  
-		  
+		  If InputFile <> Nil Then
+		    If OutputFile <> Nil Then
+		      If InputFile.Exists And OutputFile.Exists Then
+		        
+		        btnConvert.Enabled = True
+		        btnReset.Enabled = True
+		      Else
+		        
+		        btnConvert.Enabled = False
+		        btnReset.Enabled = False
+		      End If
+		    End If
+		  End If
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -1475,6 +1496,13 @@ End
 		    ' User Cancelled
 		  End If
 		  
+		  ' If InputFile.Exists And OutputFile.Exists Then
+		  ' btnConvert.Enabled = 
+		  ' btnReset.Enabled = 
+		  ' Else
+		  ' btnConvert.Enabled = False
+		  ' btnReset.Enabled = False
+		  ' End If
 		  
 		End Sub
 	#tag EndEvent
@@ -1956,6 +1984,33 @@ End
 #tag Events btnReset
 	#tag Event
 		Sub Pressed()
+		  InputFile = Nil
+		  Self.lblInputFile.Text = ""
+		  oSQL.Reset( )
+		  OutputFile = Nil
+		  Self.lblOutputFile.Text = ""
+		  ProfilePicFile = Nil
+		  Self.lblImageFile.Text = ""
+		  strHTML = ""
+		  xmlWalk = Nil
+		  
+		  ReadTemplate(TemplateFile)
+		  
+		  ' If InputFile <> Nil Then
+		  ' If OutputFile <> Nil Then
+		  ' If InputFile.Exists And OutputFile.Exists Then
+		  ' 
+		  ' btnConvert.Enabled = 
+		  ' btnReset.Enabled = 
+		  ' Else
+		  ' 
+		  ' btnConvert.Enabled = False
+		  ' btnReset.Enabled = False
+		  ' End If
+		  ' End If
+		  ' End If
+		  
+		  
 		  
 		End Sub
 	#tag EndEvent
@@ -1973,8 +2028,10 @@ End
 		  
 		  If f <> Nil Then
 		    
-		    OutputFile = f
+		    TemplateFile = f
+		    ' OutputFile = f
 		    lblOutputTemplate.Text = OutputFile.NativePath
+		    ReadTemplate( TemplateFile )
 		    
 		  Else
 		    ' User Cancelled
