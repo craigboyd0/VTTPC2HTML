@@ -426,7 +426,7 @@ End
 		      strHTML = strHTML.Replace( "{{pcsize}}", PCModule.PCSize )
 		      strHTML = strHTML.Replace( "{{pcheight}}", PCModule.PCSize )
 		      strHTML = strHTML.Replace( "{{pcweight}}", PCModule.PCSize )
-		      strHTML = strHTML.Replace( "{{character_name}}", PCModule.PCName )
+		      strHTML = strHTML.Replace( "{{pc_appearance}}", PCModule.Appearance )
 		      strHTML = strHTML.Replace( "{{proficiency_bonus}}", str( PCModule.ProfBonus ) )
 		      strHTML = strHTML.Replace( "{{passive_perception}}", str( PCModule.PassPerc ) )
 		      strHTML = strHTML.Replace( "{{armor_class}}", str( PCModule.ACTotal ) )
