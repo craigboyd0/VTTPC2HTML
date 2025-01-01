@@ -2,6 +2,24 @@
 Protected Class App
 Inherits DesktopApplication
 	#tag Event
+		Function CancelClosing() As Boolean
+		  // You've determined that you need to cancel the
+		  // close, so...
+		  ' If appQuitting Then // This "if" is not strictly necessary ~ appQuitting no longer exists
+		  Kaju.CancelUpdate
+		  ' End If
+		  Return True
+		End Function
+	#tag EndEvent
+
+	#tag Event
+		Sub Closing()
+		  App.UpdateInitiater = Nil
+		  
+		End Sub
+	#tag EndEvent
+
+	#tag Event
 		Sub Opening()
 		  ' ConstantStorageLocation( App )
 		  jpegType = New FileType
@@ -44,6 +62,10 @@ Inherits DesktopApplication
 
 	#tag Property, Flags = &h0
 		pngType As FileType
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		UpdateInitiater As Kaju.UpdateInitiater
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
