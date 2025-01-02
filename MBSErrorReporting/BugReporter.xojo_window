@@ -25,11 +25,13 @@ Begin DesktopWindow BugReporter
    Visible         =   False
    Width           =   600
    Begin DesktopLabel Status
-      AutoDeactivate  =   True
+      AllowAutoDeactivate=   True
       Bold            =   False
       Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
       Height          =   20
-      HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
@@ -46,11 +48,9 @@ Begin DesktopWindow BugReporter
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
-      TextAlign       =   3
+      TextAlignment   =   0
       TextColor       =   &c00000000
-      TextFont        =   "SmallSystem"
-      TextSize        =   0.0
-      TextUnit        =   0
+      Tooltip         =   ""
       Top             =   460
       Transparent     =   False
       Underline       =   False
@@ -58,15 +58,16 @@ Begin DesktopWindow BugReporter
       Width           =   346
    End
    Begin DesktopButton SendButton
-      AutoDeactivate  =   True
+      AllowAutoDeactivate=   True
       Bold            =   False
-      ButtonStyle     =   0
       Cancel          =   False
       Caption         =   "#kSend"
       Default         =   False
       Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
       Height          =   20
-      HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
@@ -76,13 +77,12 @@ Begin DesktopWindow BugReporter
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   False
+      MacButtonStyle  =   0
       Scope           =   2
       TabIndex        =   8
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
+      Tooltip         =   ""
       Top             =   460
       Transparent     =   False
       Underline       =   False
@@ -90,15 +90,16 @@ Begin DesktopWindow BugReporter
       Width           =   95
    End
    Begin DesktopButton CancelButton
-      AutoDeactivate  =   True
+      AllowAutoDeactivate=   True
       Bold            =   False
-      ButtonStyle     =   0
       Cancel          =   True
       Caption         =   "#kCancel"
       Default         =   False
       Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
       Height          =   20
-      HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
@@ -108,13 +109,12 @@ Begin DesktopWindow BugReporter
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   False
+      MacButtonStyle  =   0
       Scope           =   2
       TabIndex        =   7
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
+      Tooltip         =   ""
       Top             =   460
       Transparent     =   False
       Underline       =   False
@@ -130,23 +130,13 @@ Begin DesktopWindow BugReporter
       Scope           =   0
       TabPanelIndex   =   0
    End
-   Begin HTTPSocket sock
-      Address         =   ""
-      BytesAvailable  =   0
-      BytesLeftToSend =   0
-      Handle          =   0
-      httpProxyAddress=   ""
-      httpProxyPort   =   0
+   Begin URLConnection sock
+      AllowCertificateValidation=   False
+      HTTPStatusCode  =   0
       Index           =   -2147483648
-      InitialParent   =   ""
-      IsConnected     =   False
-      LocalAddress    =   ""
       LockedInPosition=   False
-      Port            =   0
-      RemoteAddress   =   ""
       Scope           =   0
       TabPanelIndex   =   0
-      yield           =   False
    End
    Begin Timer AutoSendTimer
       Index           =   -2147483648
@@ -158,11 +148,13 @@ Begin DesktopWindow BugReporter
       TabPanelIndex   =   0
    End
    Begin DesktopTabPanel Tab
-      AutoDeactivate  =   True
+      AllowAutoDeactivate=   True
       Bold            =   False
       Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
       Height          =   434
-      HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
@@ -179,9 +171,7 @@ Begin DesktopWindow BugReporter
       TabIndex        =   22
       TabPanelIndex   =   0
       TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
+      Tooltip         =   ""
       Top             =   14
       Transparent     =   False
       Underline       =   False
@@ -189,23 +179,27 @@ Begin DesktopWindow BugReporter
       Visible         =   True
       Width           =   560
       Begin DesktopTextArea iDescription
-         AcceptTabs      =   False
-         Alignment       =   0
-         AutoDeactivate  =   True
-         AutomaticallyCheckSpelling=   True
-         BackColor       =   &cFFFFFF00
+         AllowAutoDeactivate=   True
+         AllowFocusRing  =   True
+         AllowSpellChecking=   True
+         AllowStyledText =   True
+         AllowTabs       =   False
+         BackgroundColor =   &cFFFFFF
          Bold            =   False
-         Border          =   True
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Format          =   ""
+         HasBorder       =   True
+         HasHorizontalScrollbar=   False
+         HasVerticalScrollbar=   True
          Height          =   136
-         HelpTag         =   ""
          HideSelection   =   True
          Index           =   -2147483648
          InitialParent   =   "Tab"
          Italic          =   False
          Left            =   40
-         LimitText       =   0
          LineHeight      =   0.0
          LineSpacing     =   0.0
          LockBottom      =   True
@@ -213,35 +207,33 @@ Begin DesktopWindow BugReporter
          LockLeft        =   True
          LockRight       =   True
          LockTop         =   True
-         Mask            =   ""
+         MaximumCharactersAllowed=   0
          Multiline       =   True
          ReadOnly        =   False
          Scope           =   2
-         ScrollbarHorizontal=   False
-         ScrollbarVertical=   True
-         Styled          =   False
          TabIndex        =   0
          TabPanelIndex   =   1
          TabStop         =   True
          Text            =   ""
+         TextAlignment   =   0
          TextColor       =   &c00000000
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   134
          Transparent     =   False
          Underline       =   False
          UnicodeMode     =   0
-         UseFocusRing    =   True
+         ValidationMask  =   ""
          Visible         =   True
          Width           =   520
       End
       Begin DesktopLabel StaticText4
-         AutoDeactivate  =   True
+         AllowAutoDeactivate=   True
          Bold            =   False
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Height          =   20
-         HelpTag         =   ""
          Index           =   -2147483648
          InitialParent   =   "Tab"
          Italic          =   False
@@ -258,11 +250,9 @@ Begin DesktopWindow BugReporter
          TabPanelIndex   =   1
          TabStop         =   True
          Text            =   "#kDescription"
-         TextAlign       =   0
+         TextAlignment   =   0
          TextColor       =   &c00000000
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   102
          Transparent     =   False
          Underline       =   False
@@ -270,11 +260,13 @@ Begin DesktopWindow BugReporter
          Width           =   520
       End
       Begin DesktopLabel StepLabel
-         AutoDeactivate  =   True
+         AllowAutoDeactivate=   True
          Bold            =   False
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Height          =   20
-         HelpTag         =   ""
          Index           =   -2147483648
          InitialParent   =   "Tab"
          Italic          =   False
@@ -291,11 +283,9 @@ Begin DesktopWindow BugReporter
          TabPanelIndex   =   1
          TabStop         =   True
          Text            =   "#kReproduce"
-         TextAlign       =   0
+         TextAlignment   =   0
          TextColor       =   &c00000000
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   282
          Transparent     =   False
          Underline       =   False
@@ -303,23 +293,27 @@ Begin DesktopWindow BugReporter
          Width           =   520
       End
       Begin DesktopTextArea iSteps
-         AcceptTabs      =   False
-         Alignment       =   0
-         AutoDeactivate  =   True
-         AutomaticallyCheckSpelling=   True
-         BackColor       =   &cFFFFFF00
+         AllowAutoDeactivate=   True
+         AllowFocusRing  =   True
+         AllowSpellChecking=   True
+         AllowStyledText =   True
+         AllowTabs       =   False
+         BackgroundColor =   &cFFFFFF
          Bold            =   False
-         Border          =   True
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Format          =   ""
+         HasBorder       =   True
+         HasHorizontalScrollbar=   False
+         HasVerticalScrollbar=   True
          Height          =   117
-         HelpTag         =   ""
          HideSelection   =   True
          Index           =   -2147483648
          InitialParent   =   "Tab"
          Italic          =   False
          Left            =   40
-         LimitText       =   0
          LineHeight      =   0.0
          LineSpacing     =   0.0
          LockBottom      =   True
@@ -327,35 +321,33 @@ Begin DesktopWindow BugReporter
          LockLeft        =   True
          LockRight       =   True
          LockTop         =   False
-         Mask            =   ""
+         MaximumCharactersAllowed=   0
          Multiline       =   True
          ReadOnly        =   False
          Scope           =   2
-         ScrollbarHorizontal=   False
-         ScrollbarVertical=   True
-         Styled          =   False
          TabIndex        =   3
          TabPanelIndex   =   1
          TabStop         =   True
          Text            =   ""
+         TextAlignment   =   0
          TextColor       =   &c00000000
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   314
          Transparent     =   False
          Underline       =   False
          UnicodeMode     =   0
-         UseFocusRing    =   True
+         ValidationMask  =   ""
          Visible         =   True
          Width           =   520
       End
       Begin DesktopLabel Reason
-         AutoDeactivate  =   True
+         AllowAutoDeactivate=   True
          Bold            =   False
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Height          =   35
-         HelpTag         =   ""
          Index           =   -2147483648
          InitialParent   =   "Tab"
          Italic          =   False
@@ -372,11 +364,9 @@ Begin DesktopWindow BugReporter
          TabPanelIndex   =   1
          TabStop         =   True
          Text            =   "Reason..."
-         TextAlign       =   0
+         TextAlignment   =   0
          TextColor       =   &c00000000
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   55
          Transparent     =   False
          Underline       =   False
@@ -384,29 +374,30 @@ Begin DesktopWindow BugReporter
          Width           =   520
       End
       Begin DesktopTextField iName
-         AcceptTabs      =   False
-         Alignment       =   0
-         AutoDeactivate  =   True
-         AutomaticallyCheckSpelling=   False
-         BackColor       =   &cFFFFFF00
+         AllowAutoDeactivate=   True
+         AllowFocusRing  =   True
+         AllowSpellChecking=   False
+         AllowTabs       =   False
+         BackgroundColor =   &cFFFFFF
          Bold            =   False
-         Border          =   True
-         CueText         =   ""
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Format          =   ""
+         HasBorder       =   True
          Height          =   22
-         HelpTag         =   ""
+         Hint            =   ""
          Index           =   -2147483648
          InitialParent   =   "Tab"
          Italic          =   False
          Left            =   187
-         LimitText       =   0
          LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   True
          LockRight       =   True
          LockTop         =   True
-         Mask            =   ""
+         MaximumCharactersAllowed=   0
          Password        =   False
          ReadOnly        =   False
          Scope           =   2
@@ -414,23 +405,24 @@ Begin DesktopWindow BugReporter
          TabPanelIndex   =   2
          TabStop         =   True
          Text            =   ""
+         TextAlignment   =   0
          TextColor       =   &c00000000
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   55
          Transparent     =   False
          Underline       =   False
-         UseFocusRing    =   True
+         ValidationMask  =   ""
          Visible         =   True
          Width           =   373
       End
       Begin DesktopLabel LabelName
-         AutoDeactivate  =   True
+         AllowAutoDeactivate=   True
          Bold            =   False
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Height          =   20
-         HelpTag         =   ""
          Index           =   -2147483648
          InitialParent   =   "Tab"
          Italic          =   False
@@ -447,11 +439,9 @@ Begin DesktopWindow BugReporter
          TabPanelIndex   =   2
          TabStop         =   True
          Text            =   "#kNameLabel"
-         TextAlign       =   0
+         TextAlignment   =   0
          TextColor       =   &c00000000
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   57
          Transparent     =   False
          Underline       =   False
@@ -459,29 +449,30 @@ Begin DesktopWindow BugReporter
          Width           =   135
       End
       Begin DesktopTextField iCompany
-         AcceptTabs      =   False
-         Alignment       =   0
-         AutoDeactivate  =   True
-         AutomaticallyCheckSpelling=   False
-         BackColor       =   &cFFFFFF00
+         AllowAutoDeactivate=   True
+         AllowFocusRing  =   True
+         AllowSpellChecking=   False
+         AllowTabs       =   False
+         BackgroundColor =   &cFFFFFF
          Bold            =   False
-         Border          =   True
-         CueText         =   ""
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Format          =   ""
+         HasBorder       =   True
          Height          =   22
-         HelpTag         =   ""
+         Hint            =   ""
          Index           =   -2147483648
          InitialParent   =   "Tab"
          Italic          =   False
          Left            =   187
-         LimitText       =   0
          LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   True
          LockRight       =   True
          LockTop         =   True
-         Mask            =   ""
+         MaximumCharactersAllowed=   0
          Password        =   False
          ReadOnly        =   False
          Scope           =   2
@@ -489,23 +480,24 @@ Begin DesktopWindow BugReporter
          TabPanelIndex   =   2
          TabStop         =   True
          Text            =   ""
+         TextAlignment   =   0
          TextColor       =   &c00000000
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   89
          Transparent     =   False
          Underline       =   False
-         UseFocusRing    =   True
+         ValidationMask  =   ""
          Visible         =   True
          Width           =   373
       End
       Begin DesktopLabel LabelCompany
-         AutoDeactivate  =   True
+         AllowAutoDeactivate=   True
          Bold            =   False
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Height          =   20
-         HelpTag         =   ""
          Index           =   -2147483648
          InitialParent   =   "Tab"
          Italic          =   False
@@ -522,11 +514,9 @@ Begin DesktopWindow BugReporter
          TabPanelIndex   =   2
          TabStop         =   True
          Text            =   "#kCompanyLabel"
-         TextAlign       =   0
+         TextAlignment   =   0
          TextColor       =   &c00000000
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   90
          Transparent     =   False
          Underline       =   False
@@ -534,29 +524,30 @@ Begin DesktopWindow BugReporter
          Width           =   135
       End
       Begin DesktopTextField iEmail
-         AcceptTabs      =   False
-         Alignment       =   0
-         AutoDeactivate  =   True
-         AutomaticallyCheckSpelling=   False
-         BackColor       =   &cFFFFFF00
+         AllowAutoDeactivate=   True
+         AllowFocusRing  =   True
+         AllowSpellChecking=   False
+         AllowTabs       =   False
+         BackgroundColor =   &cFFFFFF
          Bold            =   False
-         Border          =   True
-         CueText         =   ""
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Format          =   ""
+         HasBorder       =   True
          Height          =   22
-         HelpTag         =   ""
+         Hint            =   ""
          Index           =   -2147483648
          InitialParent   =   "Tab"
          Italic          =   False
          Left            =   187
-         LimitText       =   0
          LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   True
          LockRight       =   True
          LockTop         =   True
-         Mask            =   ""
+         MaximumCharactersAllowed=   0
          Password        =   False
          ReadOnly        =   False
          Scope           =   2
@@ -564,23 +555,24 @@ Begin DesktopWindow BugReporter
          TabPanelIndex   =   2
          TabStop         =   True
          Text            =   ""
+         TextAlignment   =   0
          TextColor       =   &c00000000
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   122
          Transparent     =   False
          Underline       =   False
-         UseFocusRing    =   True
+         ValidationMask  =   ""
          Visible         =   True
          Width           =   373
       End
       Begin DesktopLabel LabelEmail
-         AutoDeactivate  =   True
+         AllowAutoDeactivate=   True
          Bold            =   False
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Height          =   20
-         HelpTag         =   ""
          Index           =   -2147483648
          InitialParent   =   "Tab"
          Italic          =   False
@@ -597,11 +589,9 @@ Begin DesktopWindow BugReporter
          TabPanelIndex   =   2
          TabStop         =   True
          Text            =   "#kEmailLabel"
-         TextAlign       =   0
+         TextAlignment   =   0
          TextColor       =   &c00000000
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   123
          Transparent     =   False
          Underline       =   False
@@ -609,29 +599,30 @@ Begin DesktopWindow BugReporter
          Width           =   135
       End
       Begin DesktopTextField iComputer
-         AcceptTabs      =   False
-         Alignment       =   0
-         AutoDeactivate  =   True
-         AutomaticallyCheckSpelling=   False
-         BackColor       =   &cFFFFFF00
+         AllowAutoDeactivate=   True
+         AllowFocusRing  =   True
+         AllowSpellChecking=   False
+         AllowTabs       =   False
+         BackgroundColor =   &cFFFFFF
          Bold            =   False
-         Border          =   True
-         CueText         =   ""
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Format          =   ""
+         HasBorder       =   True
          Height          =   22
-         HelpTag         =   ""
+         Hint            =   ""
          Index           =   -2147483648
          InitialParent   =   "Tab"
          Italic          =   False
          Left            =   187
-         LimitText       =   0
          LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   True
          LockRight       =   True
          LockTop         =   True
-         Mask            =   ""
+         MaximumCharactersAllowed=   0
          Password        =   False
          ReadOnly        =   False
          Scope           =   2
@@ -639,23 +630,24 @@ Begin DesktopWindow BugReporter
          TabPanelIndex   =   2
          TabStop         =   True
          Text            =   ""
+         TextAlignment   =   0
          TextColor       =   &c00000000
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   155
          Transparent     =   False
          Underline       =   False
-         UseFocusRing    =   True
+         ValidationMask  =   ""
          Visible         =   True
          Width           =   373
       End
       Begin DesktopLabel LabelComputer
-         AutoDeactivate  =   True
+         AllowAutoDeactivate=   True
          Bold            =   False
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Height          =   20
-         HelpTag         =   ""
          Index           =   -2147483648
          InitialParent   =   "Tab"
          Italic          =   False
@@ -672,11 +664,9 @@ Begin DesktopWindow BugReporter
          TabPanelIndex   =   2
          TabStop         =   True
          Text            =   "#kComputer"
-         TextAlign       =   0
+         TextAlignment   =   0
          TextColor       =   &c00000000
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   156
          Transparent     =   False
          Underline       =   False
@@ -684,29 +674,30 @@ Begin DesktopWindow BugReporter
          Width           =   135
       End
       Begin DesktopTextField iProduct
-         AcceptTabs      =   False
-         Alignment       =   0
-         AutoDeactivate  =   True
-         AutomaticallyCheckSpelling=   False
-         BackColor       =   &cFFFFFF00
+         AllowAutoDeactivate=   True
+         AllowFocusRing  =   True
+         AllowSpellChecking=   False
+         AllowTabs       =   False
+         BackgroundColor =   &cFFFFFF
          Bold            =   False
-         Border          =   True
-         CueText         =   ""
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Format          =   ""
+         HasBorder       =   True
          Height          =   22
-         HelpTag         =   ""
+         Hint            =   ""
          Index           =   -2147483648
          InitialParent   =   "Tab"
          Italic          =   False
          Left            =   187
-         LimitText       =   0
          LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   True
          LockRight       =   True
          LockTop         =   True
-         Mask            =   ""
+         MaximumCharactersAllowed=   0
          Password        =   False
          ReadOnly        =   False
          Scope           =   2
@@ -714,23 +705,24 @@ Begin DesktopWindow BugReporter
          TabPanelIndex   =   2
          TabStop         =   True
          Text            =   ""
+         TextAlignment   =   0
          TextColor       =   &c00000000
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   188
          Transparent     =   False
          Underline       =   False
-         UseFocusRing    =   True
+         ValidationMask  =   ""
          Visible         =   True
          Width           =   373
       End
       Begin DesktopLabel LabelProduct
-         AutoDeactivate  =   True
+         AllowAutoDeactivate=   True
          Bold            =   False
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Height          =   20
-         HelpTag         =   ""
          Index           =   -2147483648
          InitialParent   =   "Tab"
          Italic          =   False
@@ -747,11 +739,9 @@ Begin DesktopWindow BugReporter
          TabPanelIndex   =   2
          TabStop         =   True
          Text            =   "#kProduct"
-         TextAlign       =   0
+         TextAlignment   =   0
          TextColor       =   &c00000000
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   189
          Transparent     =   False
          Underline       =   False
@@ -759,29 +749,29 @@ Begin DesktopWindow BugReporter
          Width           =   135
       End
       Begin DesktopPopupMenu iClassification
-         AutoDeactivate  =   True
+         AllowAutoDeactivate=   True
          Bold            =   False
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Height          =   20
-         HelpTag         =   ""
          Index           =   -2147483648
          InitialParent   =   "Tab"
          InitialValue    =   ""
          Italic          =   False
          Left            =   187
-         ListIndex       =   0
          LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   True
          LockRight       =   True
          LockTop         =   True
          Scope           =   2
+         SelectedRowIndex=   0
          TabIndex        =   10
          TabPanelIndex   =   2
          TabStop         =   True
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   221
          Transparent     =   False
          Underline       =   False
@@ -789,11 +779,13 @@ Begin DesktopWindow BugReporter
          Width           =   373
       End
       Begin DesktopLabel LabelClassification
-         AutoDeactivate  =   True
+         AllowAutoDeactivate=   True
          Bold            =   False
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Height          =   20
-         HelpTag         =   ""
          Index           =   -2147483648
          InitialParent   =   "Tab"
          Italic          =   False
@@ -810,11 +802,9 @@ Begin DesktopWindow BugReporter
          TabPanelIndex   =   2
          TabStop         =   True
          Text            =   "#kClassification"
-         TextAlign       =   0
+         TextAlignment   =   0
          TextColor       =   &c00000000
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   222
          Transparent     =   False
          Underline       =   False
@@ -822,11 +812,13 @@ Begin DesktopWindow BugReporter
          Width           =   135
       End
       Begin DesktopLabel LabelComment
-         AutoDeactivate  =   True
+         AllowAutoDeactivate=   True
          Bold            =   False
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Height          =   20
-         HelpTag         =   ""
          Index           =   -2147483648
          InitialParent   =   "Tab"
          Italic          =   False
@@ -843,11 +835,9 @@ Begin DesktopWindow BugReporter
          TabPanelIndex   =   2
          TabStop         =   True
          Text            =   "#kCommentLabel"
-         TextAlign       =   0
+         TextAlignment   =   0
          TextColor       =   &c00000000
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   255
          Transparent     =   False
          Underline       =   False
@@ -855,23 +845,27 @@ Begin DesktopWindow BugReporter
          Width           =   135
       End
       Begin DesktopTextArea iComment
-         AcceptTabs      =   False
-         Alignment       =   0
-         AutoDeactivate  =   True
-         AutomaticallyCheckSpelling=   True
-         BackColor       =   &cFFFFFF00
+         AllowAutoDeactivate=   True
+         AllowFocusRing  =   True
+         AllowSpellChecking=   True
+         AllowStyledText =   True
+         AllowTabs       =   False
+         BackgroundColor =   &cFFFFFF
          Bold            =   False
-         Border          =   True
          Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
          Format          =   ""
+         HasBorder       =   True
+         HasHorizontalScrollbar=   False
+         HasVerticalScrollbar=   True
          Height          =   177
-         HelpTag         =   ""
          HideSelection   =   True
          Index           =   -2147483648
          InitialParent   =   "Tab"
          Italic          =   False
          Left            =   187
-         LimitText       =   0
          LineHeight      =   0.0
          LineSpacing     =   0.0
          LockBottom      =   True
@@ -879,26 +873,22 @@ Begin DesktopWindow BugReporter
          LockLeft        =   True
          LockRight       =   True
          LockTop         =   True
-         Mask            =   ""
+         MaximumCharactersAllowed=   0
          Multiline       =   True
          ReadOnly        =   False
          Scope           =   2
-         ScrollbarHorizontal=   False
-         ScrollbarVertical=   True
-         Styled          =   False
          TabIndex        =   13
          TabPanelIndex   =   2
          TabStop         =   True
          Text            =   ""
+         TextAlignment   =   0
          TextColor       =   &c00000000
-         TextFont        =   "System"
-         TextSize        =   0.0
-         TextUnit        =   0
+         Tooltip         =   ""
          Top             =   254
          Transparent     =   False
          Underline       =   False
          UnicodeMode     =   0
-         UseFocusRing    =   True
+         ValidationMask  =   ""
          Visible         =   True
          Width           =   373
       End
@@ -1089,26 +1079,32 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub DoSend()
-		  #Pragma StackOverflowChecking false
+		  #Pragma StackOverflowChecking False
 		  
-		  dim lines(-1) as string
-		  dim s as string
+		  Dim lines( -1 ) As String
+		  Dim s As String
+		  Var formDataString, response As String
 		  
-		  lines=MakeReport
-		  s=Join(lines, EndOfLine)
 		  
-		  dim dic as new Dictionary
+		  lines = MakeReport
+		  s = Join( lines, EndOfLine )
 		  
-		  dic.Value("text")=s
-		  dic.Value("reason")=ReasonText
+		  Dim dic As New Dictionary
 		  
-		  // if you have udpater engine, you can support proxies here:
-		  ' UpdaterEngine.SetSocketProxy(sock)
+		  dic.Value( "error_details" ) = s
+		  dic.Value( "error_message" ) = ReasonText
 		  
-		  sock.SetRequestContent "",""
-		  sock.SetFormData dic
+		  For Each key As String In dic.Keys
+		    If formDataString <> "" Then
+		      formDataString = formDataString + "&"
+		    End If
+		    formDataString = formDataString + key + "=" + dic.Value( key ).StringValue
+		  Next
 		  
-		  sock.Post(BugReporterConfiguration.kScriptURL)
+		  sock.RequestHeader( "Authorization" ) = "Bearer " + kToken // note!  there is a space after the word Bearer
+		  sock.SetRequestContent( formDataString, "application/text" )
+		  response = sock.SendSync( "POST", BugReporterConfiguration.kScriptURL, 0 )
+		  MessageBox( "Response: " + response )
 		  
 		End Sub
 	#tag EndMethod
@@ -2115,6 +2111,9 @@ End
 		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Vos d\xC3\xA9tails"
 	#tag EndConstant
 
+	#tag Constant, Name = kToken, Type = String, Dynamic = False, Default = \"19GPDJYRVLKSQ7NEX4BMC6WF67", Scope = Public
+	#tag EndConstant
+
 
 #tag EndWindowCode
 
@@ -2157,41 +2156,34 @@ End
 #tag EndEvents
 #tag Events sock
 	#tag Event
-		Sub Connected()
-		  if status<>nil then
-		    status.text="Connected"
-		  end if
-		  
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub Error(code as integer)
-		  if code=102 then
+		Sub Error(e As RuntimeException)
+		  If e.ErrorNumber = 102 Then
 		    // ignore
-		  elseif code=103 then
-		    HaveInternet=false
+		  ElseIf e.ErrorNumber = 103 Then
+		    HaveInternet = False
 		    MsgBox kInternetTrouble
 		    DoSave
-		  elseif status<>nil then
-		    status.text="Error: "+str(code)
-		  end if
+		  ElseIf e <> Nil Then
+		    status.Text = "Error: " + str( e ) + " :: " + e.Message
+		  End If
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub PageReceived(url as string, httpStatus as integer, headers as internetHeaders, content as string)
-		  #pragma Unused URL
-		  #pragma Unused headers
-		  #pragma Unused content
+		Sub ContentReceived(URL As String, HTTPStatus As Integer, content As String)
+		  #Pragma Unused URL
+		  '#Pragma Unused headers
+		  #Pragma Unused content
 		  
-		  if status<>nil then
-		    status.text="Page Received: "+str(httpStatus)
-		  end if
+		  If status <> Nil Then
+		    status.Text = "Page Received: " + str( httpStatus )
+		  End If
 		  
-		  if left(content,2)="OK" then
+		  If left( content, 2 ) = "OK" Then
 		    close
 		    Return
-		  end if
+		  End If
+		  // from the old PageReceived event handler
 		  
 		End Sub
 	#tag EndEvent

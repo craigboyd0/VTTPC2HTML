@@ -20,10 +20,10 @@ Protected Module BugReporterConfiguration
 	#tag Constant, Name = AutoSendBugreportAfterDelay, Type = Double, Dynamic = False, Default = \"60", Scope = Protected
 	#tag EndConstant
 
-	#tag Constant, Name = kScriptURL, Type = String, Dynamic = False, Default = \"https://dmtools.app/bugreporter/bugreporter.php", Scope = Protected
+	#tag Constant, Name = kScriptURL, Type = String, Dynamic = False, Default = \"https://dmtools.app/bugreporter/errorreport.php", Scope = Protected
 	#tag EndConstant
 
-	#tag Constant, Name = kSupportEmail, Type = String, Dynamic = False, Default = \"dmtoolsapp@gmail.com", Scope = Protected
+	#tag Constant, Name = kSupportEmail, Type = String, Dynamic = False, Default = \"support@dmtools.app", Scope = Protected
 	#tag EndConstant
 
 	#tag Constant, Name = kUseAddressbookViaMBS, Type = Boolean, Dynamic = False, Default = \"false", Scope = Protected
