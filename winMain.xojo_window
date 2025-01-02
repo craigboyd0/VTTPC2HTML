@@ -377,13 +377,14 @@ End
 	#tag Event
 		Sub Opening()
 		  Var f As FolderItem
-		  f = New FolderItem ( "dnd5eCharSheet.html" )
+		  
+		  f = New FolderItem( "dnd5eCharSheet.html" )
 		  
 		  If f.Exists Then
 		    
 		    TemplateFile = f
 		    lblOutputTemplate.Text = TemplateFile.NativePath
-		    ReadTemplate ( TemplateFile )
+		    ReadTemplate( TemplateFile )
 		    
 		  End If
 		  
@@ -391,15 +392,35 @@ End
 		  
 		  db = New SQLiteDatabase
 		  Try
-		    db.Connect ( ) 
-		    db.ExecuteSQL ( k_ddl )
+		    db.Connect( ) 
+		    db.ExecuteSQL( k_ddl )
 		  Catch e As DatabaseException
-		    MessageBox ( e.Message )
+		    MessageBox( e.Message )
 		  End Try
 		  
 		  oSQL = New cSmartSQL
+		  
+		  
+		  PrefsFolderCheck( )
+		  Var updater As New Kaju.UpdateChecker( pc2htmlprefs )
+		  updater.ServerPublicRSAKey = "30820120300D06092A864886F70D01010105000382010D00308201080282010100B819A0A2E1C5763CBA779E910D919EE509D3E85EE2FE70FCB74FB75D638DBE7148FB7AC63A97ED21FCEF6E486BC2517BA23EF461FF656FF81C8CC70274376C9576DB31FA05A41CA4C1FA4FA03510039896C32E24418D74452A00BAF8EE15023C110216E541D433A82B05C59A4CAEF449F6EA334C9E5FF1CC2B928CD60BC500309760199BD07976D2432F15B8F3037CF9A6F37420293BCFD99A419FB1CFEDF29D1A80023D70AAC18DE4FCC29C3AEF18D376F8E7E0CADC99CC83312B42E0B77116EB4BD027AB4B38C68C534B856EAACA6BAED701F2926D1609229E9EC2C16118AA346BCE58C0CABC019CD1CF9AFF5FEC821CDF674533B89CACC7D1BA41C6B59FE1020111"
+		  Updater.UpdateURL = "https://dmtools.app/pc2html_versions/test.kaju"
+		  
+		  
+		  
+		  
+		  updater.ExecuteAsync
 		End Sub
 	#tag EndEvent
+
+
+	#tag MenuHandler
+		Function About() As Boolean Handles About.Action
+		  Dim w as New winAbout
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
 
 
 	#tag Method, Flags = &h1
@@ -812,6 +833,27 @@ End
 		    End Try
 		    MsgBox( "Output file has been written" )
 		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub PrefsFolderCheck()
+		  // pc2htmlprefs = New FolderItem
+		  
+		  Var appDirectory As FolderItem
+		  Var newDirectory As FolderItem
+		  
+		  appDirectory = app.ExecutableFile.Parent
+		  
+		  If appDirectory <> Nil Then
+		    newDirectory = appDirectory.Child( "pc2htmlprefs" )
+		    
+		    If Not newDirectory.Exists Then
+		      newDirectory.CreateFolder
+		    Else
+		    End If
+		  End If
+		  pc2htmlprefs = newDirectory
 		End Sub
 	#tag EndMethod
 
@@ -1409,6 +1451,10 @@ End
 
 	#tag Property, Flags = &h1
 		Protected OutputFile As FolderItem
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		pc2htmlprefs As FolderItem
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

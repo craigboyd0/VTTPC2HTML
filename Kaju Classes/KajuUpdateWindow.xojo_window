@@ -6,7 +6,7 @@ Begin DesktopWindow KajuUpdateWindow
    DefaultLocation =   2
    FullScreen      =   False
    HasBackgroundColor=   False
-   HasCloseButton  =   False
+   HasCloseButton  =   True
    HasFullScreenButton=   False
    HasMaximizeButton=   False
    HasMinimizeButton=   False
@@ -432,23 +432,6 @@ End
 
 #tag WindowCode
 	#tag Event
-		Sub Close()
-		  If CurrentStage = Stage.Cancelled Then
-		    for each f as FolderItem in DeleteOnCancel
-		      Kaju.DeleteRecursive( f )
-		    next
-		  end if
-		  
-		  for each f as FolderItem in DeleteOnClose
-		    Kaju.DeleteRecursive( f )
-		  next
-		  
-		  CurrentUpdate = nil
-		  
-		End Sub
-	#tag EndEvent
-
-	#tag Event
 		Sub Closing()
 		  // From the deprecated "Close" Event Handler
 		  
@@ -468,59 +451,63 @@ End
 	#tag EndEvent
 
 	#tag Event
-		Sub Open()
-		  #if not TargetMacOS then
-		    //
+		Sub Opening()
+		  // From the deprecated Open event
+		  #If Not TargetMacOS Then
+		    // 
 		    // Switch the buttons around for other platforms
-		    //
-		    dim farLeft as integer = btnCancel.Left
+		    // 
+		    Dim farLeft As Integer = btnCancel.Left
 		    btnCancel.Left = btnOK.Left
 		    btnOK.Left = farLeft
 		    
-		    const kAddition = 10
+		    Const kAddition = 10
 		    
 		    btnCancel.Height = btnCancel.Height + kAddition
 		    btnOK.Height = btnOK.Height + kAddition
 		    btnSkipVersion.Height = btnSkipVersion.Height + kAddition
 		    
-		    //
+		    // 
 		    // Make the pop-up menu bigger
-		    //
+		    // 
+		    
 		    pumUpdates.Height = pumUpdates.Height + kAddition
 		    
-		    self.Height = self.Height + kAddition
+		    Self.Height = Self.Height + kAddition
 		    
-		  #endif
+		  #EndIf
 		  
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
-		  //
+		  // 
 		  // Draw a border around the release notes (Mac only)
 		  //
-		  
-		  const kThickness = 1
-		  
-		  g.DrawPicture BackgroundImage, 0, 0, g.Width, g.Height
-		  
-		  dim drawLeft as integer = hvNotes.Left - kThickness
-		  dim drawTop as integer = hvNotes.Top - kThickness
-		  dim drawRight as integer = hvNotes.Left + hvNotes.Width
-		  dim drawBottom as integer = hvNotes.Top + hvNotes.Height
-		  dim drawWidth as integer = drawRight - drawLeft + kThickness
-		  dim drawHeight as integer = drawBottom - drawTop + kThickness
-		  
-		  g.PenHeight = kThickness
-		  g.PenWidth = kThickness
-		  
-		  g.ForeColor = &c00000000 // Black
-		  g.DrawRect drawLeft, drawTop, drawWidth, drawHeight
-		  
-		  #if RBVersion > 2012.02 then
-		    #pragma unused areas
-		  #endif
+		  #If TargetMacOS Then
+		    Const kThickness = 1
+		    
+		    g.DrawPicture BackgroundImage, 0, 0, g.Width, g.Height
+		    
+		    Dim drawLeft As Integer = hvNotes.Left - kThickness
+		    Dim drawTop As Integer = hvNotes.Top - kThickness
+		    Dim drawRight As Integer = hvNotes.Left + hvNotes.Width
+		    Dim drawBottom As Integer = hvNotes.Top + hvNotes.Height
+		    Dim drawWidth As Integer = drawRight - drawLeft + kThickness
+		    Dim drawHeight As Integer = drawBottom - drawTop + kThickness
+		    
+		    g.PenHeight = kThickness
+		    g.PenWidth = kThickness
+		    
+		    g.ForeColor = &c00000000 // Black
+		    g.DrawRect drawLeft, drawTop, drawWidth, drawHeight
+		    
+		    #If RBVersion > 2012.02 Then
+		      #Pragma Unused areas
+		    #EndIf
+		    
+		  #EndIf
 		End Sub
 	#tag EndEvent
 
@@ -1393,8 +1380,7 @@ End
 			"6 - Rounded Window"
 			"7 - Global Floating Window"
 			"8 - Sheet Window"
-			"9 - Metal Window"
-			"11 - Modeless Dialog"
+			"9 - Modeless Dialog"
 		#tag EndEnumValues
 	#tag EndViewProperty
 	#tag ViewProperty
@@ -1457,8 +1443,8 @@ End
 		Visible=true
 		Group="Background"
 		InitialValue="&hFFFFFF"
-		Type="Color"
-		EditorType="Color"
+		Type="ColorGroup"
+		EditorType="ColorGroup"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="AppName"
@@ -1529,7 +1515,7 @@ End
 		Visible=true
 		Group="Appearance"
 		InitialValue=""
-		Type="MenuBar"
+		Type="DesktopMenuBar"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty

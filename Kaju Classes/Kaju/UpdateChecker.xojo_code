@@ -315,7 +315,7 @@ Protected Class UpdateChecker
 		  dim tis as TextInputStream = TextInputStream.Open( PrefFile )
 		  dim raw as string = tis.ReadAll( Encodings.UTF8 )
 		  
-		  dim j as new JSONItem( raw )
+		  Dim j As New JSONItem( raw )
 		  
 		  //
 		  // Load the individual variables here
@@ -476,7 +476,7 @@ Protected Class UpdateChecker
 		  
 		  dim sig as string = firstLine.Left( kUpdatePacketMarker.Len )
 		  if StrComp( sig, kUpdatePacketMarker, 0 ) <> 0 then
-		    return HandleError( KajuLocale.kErrorIncorrectPacketMarker )
+		    Return HandleError( KajuLocale.kErrorIncorrectPacketMarker )
 		  end if
 		  
 		  sig = firstLine.Mid( sig.Len + 1 ).Trim
@@ -824,7 +824,7 @@ Protected Class UpdateChecker
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		UpdateURL As String = "http://10.0.0.11/pc2htmlversion"
+		UpdateURL As String
 	#tag EndProperty
 
 	#tag ComputedProperty, Flags = &h0
@@ -996,7 +996,7 @@ Protected Class UpdateChecker
 			Name="UpdateURL"
 			Visible=false
 			Group="Behavior"
-			InitialValue=""
+			InitialValue="http://10.0.0.11/pc2htmlversion"
 			Type="String"
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
