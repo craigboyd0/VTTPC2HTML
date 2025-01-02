@@ -402,6 +402,25 @@ End
 	#tag EndEvent
 
 
+	#tag MenuHandler
+		Function ShowBugReport() As Boolean Handles ShowBugReport.Action
+		  BugReporter.showBugReport( )
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function ShowFeatureRequest() As Boolean Handles ShowFeatureRequest.Action
+		  BugReporter.showFeatureRequest( )
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+
 	#tag Method, Flags = &h1
 		Protected Sub OutputHTML()
 		  Var intProf As Integer

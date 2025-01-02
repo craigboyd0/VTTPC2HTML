@@ -20,10 +20,22 @@ Inherits DesktopApplication
 		  xmlFileType.Name = "text/xml"
 		  xmlFileType.Extensions = "xml"
 		  
+		  TextFileTypeName = New FileType
+		  TextFileTypeName.Name = "text/txt"
+		  TextFileTypeName.Extensions = "txt"
+		  
+		  BugReporter.init( )
+		  
 		  
 		  
 		  
 		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Function UnhandledException(error As RuntimeException) As Boolean
+		  Return BugReporter.UnhandledException(error)
+		End Function
 	#tag EndEvent
 
 
@@ -44,6 +56,10 @@ Inherits DesktopApplication
 
 	#tag Property, Flags = &h0
 		pngType As FileType
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private TextFileTypeName As FileType
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

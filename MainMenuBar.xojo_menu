@@ -112,6 +112,22 @@ Begin Menu MainMenuBar
       AutoEnabled = True
       AutoEnable = True
       Visible = True
+      Begin DesktopMenuItem ShowBugReport
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "Show Bug Report"
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
+      Begin DesktopMenuItem ShowFeatureRequest
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "Show Feature Request"
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
    End
 End
 #tag EndMenu
